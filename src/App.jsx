@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import playersData from './data/players.json'
 import PlayerCard from './components/PlayerCard'
 import PlayerModal from './components/PlayerModal'
@@ -13,19 +13,6 @@ function App() {
   // Explorer filters
   const [filters, setFilters] = useState({ era: 'All', position: 'All', search: '' })
 
-  // Dream Team state with localStorage persistence
-  const [dreamTeam, setDreamTeam] = useState(() => {
-    const saved = localStorage.getItem('dreamTeam')
-    return saved ? JSON.parse(saved) : []
-  })
-
-  const [battleResult, setBattleResult] = useState(null)
-
-  // Save dream team to localStorage whenever it changes
-  useEffect(() => {
-    localStorage.setItem('dreamTeam', JSON.stringify(dreamTeam))
-  }, [dreamTeam])
-
   // Filter players for the Explorer
   const filteredPlayers = playersData
     .filter(p => {
@@ -37,66 +24,6 @@ function App() {
       return matchesEra && matchesPos && matchesSearch
     })
     .sort((a, b) => b.career.ppg - a.career.ppg)
-
-  // Dream Team handlers
-  const addToDreamTeam = (player) => {
-    if (dreamTeam.length >= 5) {
-      alert("Your dream team is full (max 5 players)!")
-      return
-    }
-    if (dreamTeam.some(p => p.id === player.id)) {
-      alert("This player is already in your team!")
-      return
-    }
-    setDreamTeam([...dreamTeam, player])
-  }
-
-  const removeFromDreamTeam = (playerId) => {
-    setDreamTeam(dreamTeam.filter(p => p.id !== playerId))
-  }
-
-  const clearDreamTeam = () => {
-    setDreamTeam([])
-    setBattleResult(null)
-  }
-
-  const battleDreamTeam = () => {
-    if (dreamTeam.length === 0) return
-
-    // Pick 5 random players not in the team
-    const availableOpponents = playersData.filter(p => 
-      !dreamTeam.some(teamPlayer => teamPlayer.id === p.id)
-    )
-
-    const shuffled = [...availableOpponents].sort(() => 0.5 - Math.random())
-    const opponentTeam = shuffled.slice(0, 5)
-
-    // Simple Legacy Score calculation (same logic as in DreamTeam component)
-    const teamScore = calculateLegacyScore(dreamTeam)
-    const opponentScore = calculateLegacyScore(opponentTeam)
-
-    const result = {
-      yourTeam: dreamTeam,
-      yourScore: teamScore,
-      opponentTeam: opponentTeam,
-      opponentScore: opponentScore,
-      winner: teamScore > opponentScore ? "You" : "The Opponents",
-      margin: Math.abs(teamScore - opponentScore)
-    }
-
-    setBattleResult(result)
-  }
-
-  function calculateLegacyScore(team) {
-    if (team.length === 0) return 0
-    const baseScore = team.reduce((sum, player) => {
-      return sum + (player.career.ppg * 2) + (player.career.rpg * 1.5) + (player.career.apg * 1.5)
-    }, 0)
-    const uniqueEras = new Set(team.map(p => p.era)).size
-    const diversityBonus = uniqueEras * 8
-    const fullTeamBonus = team.length === 5 ? 25 : 0
-    return Math.round(baseScore + diversityBonus + fullTeamBonus)
-  }
 
   return (
     <div className="min-h-screen bg-deep-navy text-white court-bg">
@@ -196,14 +123,7 @@ function App() {
         )}
 
         {activeTab === 'dreamteam' && (
-          <DreamTeam 
-            players={playersData}
-            dreamTeam={dreamTeam}
-            onAddPlayer={addToDreamTeam}
-            onRemovePlayer={removeFromDreamTeam}
-            onClearTeam={clearDreamTeam}
-            onBattle={battleDreamTeam}
-          />
+          <DreamTeam players={playersData} />
         )}
 
         {activeTab === 'remix' && (
@@ -228,42 +148,6 @@ function App() {
 
       {/* Player Detail Modal */}
       <PlayerModal player={selectedPlayer} onClose={() => setSelectedPlayer(null)} />
-
-      {/* Simple Battle Result Modal */}
-      {battleResult && (
-        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4" onClick={() => setBattleResult(null)}>
-          <div 
-            className="bg-deep-navy border border-white/10 rounded-3xl max-w-2xl w-full p-6"
-            onClick={e => e.stopPropagation()}
-          >
-            <h2 className="text-2xl font-bold mb-4 text-center">Dream Team Battle Result</h2>
-            
-            <div className="grid grid-cols-2 gap-6 text-center mb-6">
-              <div>
-                <div className="font-semibold text-lg">Your Team</div>
-                <div className="text-4xl font-bold text-court-orange mt-2">{battleResult.yourScore}</div>
-              </div>
-              <div>
-                <div className="font-semibold text-lg">Opponents</div>
-                <div className="text-4xl font-bold text-white/70 mt-2">{battleResult.opponentScore}</div>
-              </div>
-            </div>
-
-            <div className="text-center mb-6">
-              <div className="text-xl">
-                <span className="font-semibold text-court-orange">{battleResult.winner}</span> won by {battleResult.margin} points!
-              </div>
-            </div>
-
-            <button 
-              onClick={() => setBattleResult(null)}
-              className="w-full py-3 rounded-2xl bg-white/10 hover:bg-white/20 transition"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   )
 }
