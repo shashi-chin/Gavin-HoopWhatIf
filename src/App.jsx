@@ -5,6 +5,7 @@ import PlayerModal from './components/PlayerModal'
 import Filters from './components/Filters'
 import MatchupSimulator from './components/MatchupSimulator'
 import DreamTeam from './components/DreamTeam'
+import SeasonPreview from './components/SeasonPreview'
 
 function App() {
   const [activeTab, setActiveTab] = useState('explorer')
@@ -58,6 +59,12 @@ function App() {
               className={`px-4 py-2 rounded-full transition ${activeTab === 'dreamteam' ? 'bg-white/10' : 'hover:bg-white/5'}`}
             >
               Dream Team
+            </button>
+            <button 
+              onClick={() => setActiveTab('season')}
+              className={`px-4 py-2 rounded-full transition ${activeTab === 'season' ? 'bg-white/10' : 'hover:bg-white/5'}`}
+            >
+              2025-26 Season
             </button>
             <button 
               onClick={() => setActiveTab('remix')}
@@ -125,6 +132,8 @@ function App() {
         {activeTab === 'dreamteam' && (
           <DreamTeam players={playersData} />
         )}
+
+        {activeTab === 'season' && <SeasonPreview />}
 
         {activeTab === 'remix' && (
           <div>
