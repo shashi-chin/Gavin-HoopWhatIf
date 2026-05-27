@@ -260,6 +260,18 @@ const TEAM_BUTTERFLY_EFFECTS = {
       label: "If they intentionally play slow in the first half to 'set up' transition in the second half",
       impact: +2.2,
       explanation: "This is a wild strategic idea that almost no one has tried at scale. Slow the game down early to tire the opponent out, then unleash their speed when the other team is gassed. High risk, nuclear reward."
+    },
+    {
+      id: "pacers-haliburton-offball",
+      label: "If Haliburton plays 18+ mpg off-ball as a pure shooter and cutter",
+      impact: +2.1,
+      explanation: "Haliburton is so good as a creator that people forget how elite he is as an off-ball player. In the playoffs, forcing teams to guard him without the ball could unlock a completely different version of Indiana's offense."
+    },
+    {
+      id: "pacers-mathurin-minutes",
+      label: "If Bennedict Mathurin plays 28+ mpg as the sixth man in a series",
+      impact: +1.9,
+      explanation: "Mathurin has massive playoff potential as a microwave scorer. Giving him a big role could turn Indiana from a good offensive team into an unstoppable one in spurts."
     }
   ],
   "Boston Celtics": [
@@ -300,6 +312,18 @@ const TEAM_BUTTERFLY_EFFECTS = {
       label: "If they play Mitchell Robinson + Isaiah Hartenstein together for 18+ mpg per game",
       impact: +2.1,
       explanation: "Two traditional bigs at the same time is almost extinct in modern basketball. If the Knicks made it work, it would force opponents to completely rethink how they attack the paint."
+    },
+    {
+      id: "knicks-brunson-offball",
+      label: "If Jalen Brunson plays 15+ mpg off-ball with another creator on the floor",
+      impact: +1.9,
+      explanation: "Brunson is such a dominant on-ball player that we rarely see him off-ball. In the playoffs, this version of him could make New York much harder to scheme against."
+    },
+    {
+      id: "knicks-hart-minutes",
+      label: "If Josh Hart plays 38+ mpg as the ultimate connector",
+      impact: +2.0,
+      explanation: "Hart is one of the best 'do everything' players in the league. When he gets heavy minutes in the playoffs, New York's hustle, rebounding, and defensive communication all go up a level."
     }
   ],
   "Denver Nuggets": [
@@ -348,6 +372,18 @@ const TEAM_BUTTERFLY_EFFECTS = {
       label: "If they go extremely small with Giannis at center for long stretches",
       impact: +2.0,
       explanation: "This would be one of the most unique 'positionless' experiments in the playoffs. Giannis protecting the rim while switching onto guards is a terrifying theoretical matchup."
+    },
+    {
+      id: "bucks-giannis-offball",
+      label: "If Giannis plays 15+ mpg off-ball as a pure finisher and roller",
+      impact: +2.2,
+      explanation: "Giannis is so good as a creator that teams forget how unstoppable he is when he doesn't have to carry the offense. This version of him in the playoffs would be terrifying."
+    },
+    {
+      id: "bucks-load-management",
+      label: "If Giannis plays under 30 mpg in the regular season's final month",
+      impact: +2.4,
+      explanation: "Giannis at 90-95% health in the playoffs is still the most dominant player in basketball. Milwaukee has the supporting cast to actually rest him without collapsing."
     }
   ],
   "Philadelphia 76ers": [
@@ -384,6 +420,18 @@ const TEAM_BUTTERFLY_EFFECTS = {
       label: "If they play three bigs (AD + two others) for stretches",
       impact: +1.7,
       explanation: "Going big is almost extinct, but against certain matchups it can be a massive advantage. Very few teams have the personnel to even attempt this."
+    },
+    {
+      id: "lakers-lebron-offball",
+      label: "If LeBron plays 20+ mpg off-ball with another creator",
+      impact: +2.1,
+      explanation: "LeBron as an off-ball player and secondary creator is a version of him we almost never get to see in the playoffs. It could unlock a completely different Lakers offense."
+    },
+    {
+      id: "lakers-vando-minutes",
+      label: "If Jarred Vanderbilt plays 30+ mpg as the ultimate defensive connector",
+      impact: +1.8,
+      explanation: "Vanderbilt is one of the best versatile defenders in the league when healthy. Heavy playoff minutes from him could turn the Lakers into a completely different defensive team."
     }
   ],
   "Golden State Warriors": [
