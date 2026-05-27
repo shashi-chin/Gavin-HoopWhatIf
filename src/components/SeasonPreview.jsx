@@ -205,81 +205,101 @@ const TEAM_PLAYOFF_PROFILES = {
   }
 }
 
-// === BUTTERFLY EFFECT SCENARIOS ===
-// These are the "most surprising" hidden stats for a stats-obsessed kid.
-// Each scenario is grounded in real advanced analytics but feels like a secret.
-// Small changes here can swing the Master Final Playoff Projection in big ways.
+// === BUTTERFLY EFFECT SCENARIOS (DRAMATIC VERSION) ===
+// These are deliberately surprising and counter-intuitive.
+// Designed to make a stats-obsessed 13-year-old say "whoa, I never thought of that".
+// Impacts are bigger and more meaningful. Explanations are deeper and more mind-bending.
 const TEAM_BUTTERFLY_EFFECTS = {
   "Oklahoma City Thunder": [
     {
-      id: "okc-7th-man-3pt",
-      label: "If Cason Wallace shoots 38% from 3 instead of 34%",
-      impact: +1.4,
-      explanation: "Role players who can shoot 38%+ from deep in the playoffs are worth their weight in gold. This tiny improvement adds massive spacing around Shai and Chet."
+      id: "okc-small-ball",
+      label: "If they run their 5-out small lineup for 65%+ of playoff minutes",
+      impact: +2.4,
+      explanation: "This lineup has been historically dominant on both ends. Most teams are terrified of it. Committing to it fully in the playoffs is one of the highest-leverage strategic decisions in the entire league."
+    },
+    {
+      id: "okc-chet-minutes",
+      label: "If Chet Holmgren plays 34+ mpg as the primary center (not power forward)",
+      impact: +2.1,
+      explanation: "When Chet plays center instead of power forward, OKC's defense becomes one of the best in playoff history at protecting the rim while still switching everything. This is a massive hidden variable."
     },
     {
       id: "okc-load-management",
-      label: "If they rest Shai & Chet 6 extra games in March/April",
-      impact: +0.9,
-      explanation: "Load management isn't just about avoiding injury. Fresh legs in May and June are one of the biggest hidden advantages in modern playoffs."
-    },
-    {
-      id: "okc-small-ball",
-      label: "If they play their 5-out small lineup 22% more often",
-      impact: +1.1,
-      explanation: "OKC's death lineup (with Chet at center and multiple switchable wings) is historically good. Using it more in the playoffs is a real strategic lever."
-    }
-  ],
-  "Boston Celtics": [
-    {
-      id: "celtics-horford-minutes",
-      label: "If Al Horford plays 22 mpg instead of 18 in the playoffs",
-      impact: +0.8,
-      explanation: "Horford's spacing + defensive IQ has an outsized effect on Boston's half-court offense. More minutes from him is like adding a coach on the floor."
-    },
-    {
-      id: "celtics-pritchard",
-      label: "If Payton Pritchard shoots 42% from deep in the playoffs",
-      impact: +1.2,
-      explanation: "Pritchard has been one of the best playoff shooters in basketball the last two years. When he gets hot, Boston's offense becomes nearly impossible to guard."
+      label: "If Shai & Chet average under 33 mpg from March onward",
+      impact: +1.9,
+      explanation: "Young teams that manage minutes aggressively in the regular season often outperform expectations in the playoffs more than any other group. Fresh legs + athleticism is a cheat code."
     }
   ],
   "Indiana Pacers": [
     {
       id: "pacers-pace-control",
-      label: "If they force the game under 98 possessions in a series",
-      impact: +1.6,
-      explanation: "The Pacers are built for speed. If they get dragged into a half-court series, their biggest advantage disappears. This is their biggest playoff risk."
+      label: "If they successfully force the entire series under 96 possessions per game",
+      impact: +2.6,
+      explanation: "This is the single most important variable for Indiana. Their entire identity is built on pace and transition. If a series becomes a half-court war, they become an average team overnight."
     },
     {
-      id: "pacers-turner-defense",
-      label: "If Myles Turner improves his drop coverage by 4 points",
-      impact: +1.0,
-      explanation: "Turner's ability (or inability) to protect the rim without fouling is the single biggest variable in whether Indiana can survive a long playoff run."
+      id: "pacers-turner-fouls",
+      label: "If Myles Turner averages under 3.2 fouls per game in the playoffs",
+      impact: +2.0,
+      explanation: "Turner's foul trouble is the hidden killer for Indiana. Every extra 8-10 minutes he stays on the floor without fouling completely changes how dangerous they are defensively."
+    }
+  ],
+  "Boston Celtics": [
+    {
+      id: "celtics-pritchard",
+      label: "If Payton Pritchard plays 26+ mpg and shoots 40%+ from 3 in the playoffs",
+      impact: +2.3,
+      explanation: "Pritchard is one of the most underrated playoff performers in basketball. When he gets real minutes, Boston's spacing becomes terrifying. He turns good lineups into historically great ones."
+    },
+    {
+      id: "celtics-horford",
+      label: "If Al Horford plays 24+ mpg as the starting center in a series",
+      impact: +1.8,
+      explanation: "Horford as a starter changes everything about Boston's half-court offense and defensive communication. It's like adding a second coach on the floor. Very few people appreciate how much he moves the needle."
     }
   ],
   "New York Knicks": [
     {
       id: "knicks-hartenstein",
-      label: "If Isaiah Hartenstein returns and plays 28 mpg",
-      impact: +1.8,
-      explanation: "Hartenstein is one of the best screen-and-roll finishers and rebounders in the league. His presence changes how teams have to guard Brunson and the bigs."
+      label: "If Isaiah Hartenstein is healthy and plays 30+ mpg in the playoffs",
+      impact: +2.5,
+      explanation: "Hartenstein is the ultimate 'glue' player. His screening, rolling, and defensive versatility completely change how teams have to guard Brunson. This is the single biggest swing factor for New York."
+    },
+    {
+      id: "knicks-anunoby-defense",
+      label: "If OG Anunoby plays 38+ mpg while guarding the opponent's best wing",
+      impact: +1.7,
+      explanation: "OG is one of the best playoff defenders alive. When he's healthy and locked in, he can take the best player off the board for the other team. This is New York's real X-factor."
     }
   ],
   "Denver Nuggets": [
     {
-      id: "nuggets-jokic-rest",
-      label: "If Jokić plays under 34 mpg in the regular season's final month",
-      impact: +1.3,
-      explanation: "Jokić at 85% health in the playoffs is still better than almost anyone at 100%. Managing his minutes in April is one of Denver's biggest strategic advantages."
+      id: "nuggets-jokic-minutes",
+      label: "If Jokić plays under 32 mpg in the regular season's final 25 games",
+      impact: +2.2,
+      explanation: "Jokić in the playoffs at 90% health is still the best player in basketball. The biggest advantage Denver has over everyone else is that they can actually rest their superstar without falling apart."
+    },
+    {
+      id: "nuggets-gordon-defense",
+      label: "If Aaron Gordon guards the opposing team's best forward the entire series",
+      impact: +1.6,
+      explanation: "Gordon is an elite playoff defender who doesn't get enough credit. When he takes the opponent's best wing off the board, Denver's defense jumps multiple levels."
+    }
+  ],
+  "Houston Rockets": [
+    {
+      id: "rockets-small-ball",
+      label: "If they play their ultra-small lineup (no traditional big) for 40%+ of minutes",
+      impact: +2.0,
+      explanation: "Houston's small lineups are surprisingly dominant. Most people don't realize how good they are at switching and protecting the rim without a traditional center. This is a real strategic weapon."
     }
   ],
   "DEFAULT": [
     {
       id: "default-role-shooting",
-      label: "If their 3 non-star rotation players shoot league average from 3",
-      impact: +0.7,
-      explanation: "Spacing created by average (not elite) shooters around stars is one of the most underappreciated advantages in basketball."
+      label: "If their three most important role players all shoot above league average from 3 in the playoffs",
+      impact: +1.8,
+      explanation: "This is one of the most underappreciated advantages in basketball. When role players can actually space the floor, it makes the stars 30% harder to guard. Spacing is the real cheat code."
     }
   ]
 }
@@ -905,8 +925,10 @@ export default function SeasonPreview() {
                             {effect.explanation}
                           </div>
                         )}
-                        <div className="mt-1 text-[10px] text-white/50">
-                          Impact when active: <span className="font-mono text-amber-400">+{effect.impact}</span> to Final Playoff Net Rating
+                        <div className="mt-1 text-xs">
+                          <span className="text-white/60">Impact when active:</span>{' '}
+                          <span className="font-mono text-amber-400 font-semibold text-base">+{effect.impact}</span>{' '}
+                          <span className="text-white/50">to Master Final Playoff Projection</span>
                         </div>
                       </div>
                     )
