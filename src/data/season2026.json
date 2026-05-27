@@ -3,49 +3,319 @@
   "lastUpdated": "2025-10-01",
   "predictedChampion": "Boston Celtics",
   "easternConference": [
-    { "team": "Boston Celtics", "projectedWins": 58, "strength": 92 },
-    { "team": "New York Knicks", "projectedWins": 52, "strength": 86 },
-    { "team": "Milwaukee Bucks", "projectedWins": 49, "strength": 82 },
-    { "team": "Philadelphia 76ers", "projectedWins": 47, "strength": 79 },
-    { "team": "Cleveland Cavaliers", "projectedWins": 46, "strength": 78 },
-    { "team": "Miami Heat", "projectedWins": 44, "strength": 75 },
-    { "team": "Indiana Pacers", "projectedWins": 43, "strength": 74 },
-    { "team": "Orlando Magic", "projectedWins": 42, "strength": 72 },
-    { "team": "Atlanta Hawks", "projectedWins": 38, "strength": 67 },
-    { "team": "Chicago Bulls", "projectedWins": 35, "strength": 63 },
-    { "team": "Brooklyn Nets", "projectedWins": 32, "strength": 58 },
-    { "team": "Charlotte Hornets", "projectedWins": 28, "strength": 52 },
-    { "team": "Washington Wizards", "projectedWins": 25, "strength": 47 },
-    { "team": "Detroit Pistons", "projectedWins": 35, "strength": 64 },
-    { "team": "Toronto Raptors", "projectedWins": 30, "strength": 55 }
+    { 
+      "team": "Boston Celtics", 
+      "projectedWins": 58, 
+      "strength": 92,
+      "projectedNetRating": 7.8,
+      "offensiveRating": 118.5,
+      "defensiveRating": 110.7,
+      "injuryImpact": -3,
+      "continuityScore": 82
+    },
+    { 
+      "team": "New York Knicks", 
+      "projectedWins": 52, 
+      "strength": 86,
+      "projectedNetRating": 4.2,
+      "offensiveRating": 115.8,
+      "defensiveRating": 111.6,
+      "injuryImpact": -4,
+      "continuityScore": 75
+    },
+    { 
+      "team": "Milwaukee Bucks", 
+      "projectedWins": 49, 
+      "strength": 82,
+      "projectedNetRating": 2.9,
+      "offensiveRating": 117.2,
+      "defensiveRating": 114.3,
+      "injuryImpact": -6,
+      "continuityScore": 68
+    },
+    { 
+      "team": "Philadelphia 76ers", 
+      "projectedWins": 47, 
+      "strength": 79,
+      "projectedNetRating": 1.8,
+      "offensiveRating": 116.4,
+      "defensiveRating": 114.6,
+      "injuryImpact": -7,
+      "continuityScore": 61
+    },
+    { 
+      "team": "Cleveland Cavaliers", 
+      "projectedWins": 46, 
+      "strength": 78,
+      "projectedNetRating": 1.4,
+      "offensiveRating": 114.9,
+      "defensiveRating": 113.5,
+      "injuryImpact": -3,
+      "continuityScore": 79
+    },
+    { 
+      "team": "Miami Heat", 
+      "projectedWins": 44, 
+      "strength": 75,
+      "projectedNetRating": 0.8,
+      "offensiveRating": 113.8,
+      "defensiveRating": 113.0,
+      "injuryImpact": -5,
+      "continuityScore": 71
+    },
+    { 
+      "team": "Indiana Pacers", 
+      "projectedWins": 43, 
+      "strength": 74,
+      "projectedNetRating": 0.3,
+      "offensiveRating": 117.5,
+      "defensiveRating": 117.2,
+      "injuryImpact": -2,
+      "continuityScore": 65
+    },
+    { 
+      "team": "Orlando Magic", 
+      "projectedWins": 42, 
+      "strength": 72,
+      "projectedNetRating": -0.5,
+      "offensiveRating": 112.8,
+      "defensiveRating": 113.3,
+      "injuryImpact": -3,
+      "continuityScore": 84
+    },
+    { 
+      "team": "Atlanta Hawks", 
+      "projectedWins": 38, 
+      "strength": 67,
+      "projectedNetRating": -2.8,
+      "offensiveRating": 115.2,
+      "defensiveRating": 118.0,
+      "injuryImpact": -4,
+      "continuityScore": 58
+    },
+    { 
+      "team": "Chicago Bulls", 
+      "projectedWins": 35, 
+      "strength": 63,
+      "projectedNetRating": -4.1,
+      "offensiveRating": 112.4,
+      "defensiveRating": 116.5,
+      "injuryImpact": -2,
+      "continuityScore": 72
+    },
+    { 
+      "team": "Brooklyn Nets", 
+      "projectedWins": 32, 
+      "strength": 58,
+      "projectedNetRating": -6.2,
+      "offensiveRating": 111.8,
+      "defensiveRating": 118.0,
+      "injuryImpact": -3,
+      "continuityScore": 55
+    },
+    { 
+      "team": "Charlotte Hornets", 
+      "projectedWins": 28, 
+      "strength": 52,
+      "projectedNetRating": -8.5,
+      "offensiveRating": 109.6,
+      "defensiveRating": 118.1,
+      "injuryImpact": -4,
+      "continuityScore": 48
+    },
+    { 
+      "team": "Washington Wizards", 
+      "projectedWins": 25, 
+      "strength": 47,
+      "projectedNetRating": -10.2,
+      "offensiveRating": 108.4,
+      "defensiveRating": 118.6,
+      "injuryImpact": -5,
+      "continuityScore": 42
+    },
+    { 
+      "team": "Detroit Pistons", 
+      "projectedWins": 35, 
+      "strength": 64,
+      "projectedNetRating": -3.5,
+      "offensiveRating": 113.2,
+      "defensiveRating": 116.7,
+      "injuryImpact": -6,
+      "continuityScore": 68
+    },
+    { 
+      "team": "Toronto Raptors", 
+      "projectedWins": 30, 
+      "strength": 55,
+      "projectedNetRating": -7.1,
+      "offensiveRating": 110.8,
+      "defensiveRating": 117.9,
+      "injuryImpact": -3,
+      "continuityScore": 52
+    }
   ],
   "westernConference": [
-    { "team": "Oklahoma City Thunder", "projectedWins": 59, "strength": 93 },
-    { "team": "Denver Nuggets", "projectedWins": 53, "strength": 87 },
-    { "team": "Minnesota Timberwolves", "projectedWins": 51, "strength": 84 },
-    { "team": "Phoenix Suns", "projectedWins": 48, "strength": 80 },
-    { "team": "Los Angeles Lakers", "projectedWins": 47, "strength": 79 },
-    { "team": "Golden State Warriors", "projectedWins": 46, "strength": 77 },
-    { "team": "Dallas Mavericks", "projectedWins": 45, "strength": 76 },
-    { "team": "Los Angeles Clippers", "projectedWins": 44, "strength": 74 },
-    { "team": "Sacramento Kings", "projectedWins": 42, "strength": 71 },
-    { "team": "Memphis Grizzlies", "projectedWins": 40, "strength": 68 },
-    { "team": "New Orleans Pelicans", "projectedWins": 38, "strength": 65 },
-    { "team": "Houston Rockets", "projectedWins": 48, "strength": 80 },
-    { "team": "San Antonio Spurs", "projectedWins": 36, "strength": 63 },
-    { "team": "Utah Jazz", "projectedWins": 32, "strength": 57 },
-    { "team": "Portland Trail Blazers", "projectedWins": 29, "strength": 52 }
+    { 
+      "team": "Oklahoma City Thunder", 
+      "projectedWins": 59, 
+      "strength": 93,
+      "projectedNetRating": 8.5,
+      "offensiveRating": 119.2,
+      "defensiveRating": 110.7,
+      "injuryImpact": -2,
+      "continuityScore": 78
+    },
+    { 
+      "team": "Denver Nuggets", 
+      "projectedWins": 53, 
+      "strength": 87,
+      "projectedNetRating": 5.1,
+      "offensiveRating": 118.8,
+      "defensiveRating": 113.7,
+      "injuryImpact": -4,
+      "continuityScore": 81
+    },
+    { 
+      "team": "Minnesota Timberwolves", 
+      "projectedWins": 51, 
+      "strength": 84,
+      "projectedNetRating": 3.8,
+      "offensiveRating": 116.4,
+      "defensiveRating": 112.6,
+      "injuryImpact": -3,
+      "continuityScore": 74
+    },
+    { 
+      "team": "Phoenix Suns", 
+      "projectedWins": 48, 
+      "strength": 80,
+      "projectedNetRating": 2.2,
+      "offensiveRating": 117.8,
+      "defensiveRating": 115.6,
+      "injuryImpact": -5,
+      "continuityScore": 65
+    },
+    { 
+      "team": "Los Angeles Lakers", 
+      "projectedWins": 47, 
+      "strength": 79,
+      "projectedNetRating": 1.9,
+      "offensiveRating": 116.5,
+      "defensiveRating": 114.6,
+      "injuryImpact": -6,
+      "continuityScore": 59
+    },
+    { 
+      "team": "Golden State Warriors", 
+      "projectedWins": 46, 
+      "strength": 77,
+      "projectedNetRating": 1.2,
+      "offensiveRating": 115.8,
+      "defensiveRating": 114.6,
+      "injuryImpact": -3,
+      "continuityScore": 62
+    },
+    { 
+      "team": "Dallas Mavericks", 
+      "projectedWins": 45, 
+      "strength": 76,
+      "projectedNetRating": 0.8,
+      "offensiveRating": 117.2,
+      "defensiveRating": 116.4,
+      "injuryImpact": -4,
+      "continuityScore": 71
+    },
+    { 
+      "team": "Los Angeles Clippers", 
+      "projectedWins": 44, 
+      "strength": 74,
+      "projectedNetRating": 0.1,
+      "offensiveRating": 115.4,
+      "defensiveRating": 115.3,
+      "injuryImpact": -3,
+      "continuityScore": 68
+    },
+    { 
+      "team": "Sacramento Kings", 
+      "projectedWins": 42, 
+      "strength": 71,
+      "projectedNetRating": -1.4,
+      "offensiveRating": 117.8,
+      "defensiveRating": 119.2,
+      "injuryImpact": -2,
+      "continuityScore": 64
+    },
+    { 
+      "team": "Memphis Grizzlies", 
+      "projectedWins": 40, 
+      "strength": 68,
+      "projectedNetRating": -2.8,
+      "offensiveRating": 114.2,
+      "defensiveRating": 117.0,
+      "injuryImpact": -7,
+      "continuityScore": 58
+    },
+    { 
+      "team": "New Orleans Pelicans", 
+      "projectedWins": 38, 
+      "strength": 65,
+      "projectedNetRating": -4.1,
+      "offensiveRating": 113.8,
+      "defensiveRating": 117.9,
+      "injuryImpact": -5,
+      "continuityScore": 55
+    },
+    { 
+      "team": "Houston Rockets", 
+      "projectedWins": 48, 
+      "strength": 80,
+      "projectedNetRating": 2.5,
+      "offensiveRating": 115.6,
+      "defensiveRating": 113.1,
+      "injuryImpact": -3,
+      "continuityScore": 82
+    },
+    { 
+      "team": "San Antonio Spurs", 
+      "projectedWins": 36, 
+      "strength": 63,
+      "projectedNetRating": -4.8,
+      "offensiveRating": 112.4,
+      "defensiveRating": 117.2,
+      "injuryImpact": -2,
+      "continuityScore": 78
+    },
+    { 
+      "team": "Utah Jazz", 
+      "projectedWins": 32, 
+      "strength": 57,
+      "projectedNetRating": -7.2,
+      "offensiveRating": 111.8,
+      "defensiveRating": 119.0,
+      "injuryImpact": -3,
+      "continuityScore": 48
+    },
+    { 
+      "team": "Portland Trail Blazers", 
+      "projectedWins": 29, 
+      "strength": 52,
+      "projectedNetRating": -9.4,
+      "offensiveRating": 110.2,
+      "defensiveRating": 119.6,
+      "injuryImpact": -4,
+      "continuityScore": 52
+    }
   ],
   "topProjectedPlayers": [
-    { "name": "Nikola Jokić", "team": "Denver Nuggets", "projectedPpg": 28.5, "projectedApg": 9.8, "projectedRpg": 12.2 },
-    { "name": "Luka Dončić", "team": "Dallas Mavericks", "projectedPpg": 32.1, "projectedApg": 8.5, "projectedRpg": 8.8 },
-    { "name": "Shai Gilgeous-Alexander", "team": "Oklahoma City Thunder", "projectedPpg": 31.4, "projectedApg": 6.2, "projectedRpg": 5.5 },
-    { "name": "Giannis Antetokounmpo", "team": "Milwaukee Bucks", "projectedPpg": 30.8, "projectedApg": 5.8, "projectedRpg": 11.4 },
-    { "name": "Jayson Tatum", "team": "Boston Celtics", "projectedPpg": 27.9, "projectedApg": 4.9, "projectedRpg": 8.6 },
-    { "name": "Joel Embiid", "team": "Philadelphia 76ers", "projectedPpg": 29.5, "projectedApg": 4.2, "projectedRpg": 11.0 },
-    { "name": "Anthony Edwards", "team": "Minnesota Timberwolves", "projectedPpg": 27.4, "projectedApg": 5.1, "projectedRpg": 5.8 },
-    { "name": "Devin Booker", "team": "Phoenix Suns", "projectedPpg": 26.8, "projectedApg": 6.5, "projectedRpg": 4.3 },
-    { "name": "LeBron James", "team": "Los Angeles Lakers", "projectedPpg": 24.2, "projectedApg": 7.8, "projectedRpg": 7.2 },
-    { "name": "Stephen Curry", "team": "Golden State Warriors", "projectedPpg": 24.8, "projectedApg": 5.3, "projectedRpg": 4.5 }
+    { "name": "Nikola Jokić", "team": "Denver Nuggets", "projectedPpg": 28.5, "projectedApg": 9.8, "projectedRpg": 12.2, "projectedPER": 31.2, "projectedVORP": 9.8, "twoWayScore": 94 },
+    { "name": "Luka Dončić", "team": "Dallas Mavericks", "projectedPpg": 32.1, "projectedApg": 8.5, "projectedRpg": 8.8, "projectedPER": 29.8, "projectedVORP": 8.4, "twoWayScore": 82 },
+    { "name": "Shai Gilgeous-Alexander", "team": "Oklahoma City Thunder", "projectedPpg": 31.4, "projectedApg": 6.2, "projectedRpg": 5.5, "projectedPER": 28.6, "projectedVORP": 8.1, "twoWayScore": 91 },
+    { "name": "Giannis Antetokounmpo", "team": "Milwaukee Bucks", "projectedPpg": 30.8, "projectedApg": 5.8, "projectedRpg": 11.4, "projectedPER": 29.4, "projectedVORP": 8.6, "twoWayScore": 96 },
+    { "name": "Jayson Tatum", "team": "Boston Celtics", "projectedPpg": 27.9, "projectedApg": 4.9, "projectedRpg": 8.6, "projectedPER": 25.8, "projectedVORP": 6.2, "twoWayScore": 88 },
+    { "name": "Joel Embiid", "team": "Philadelphia 76ers", "projectedPpg": 29.5, "projectedApg": 4.2, "projectedRpg": 11.0, "projectedPER": 28.1, "projectedVORP": 6.8, "twoWayScore": 87 },
+    { "name": "Anthony Edwards", "team": "Minnesota Timberwolves", "projectedPpg": 27.4, "projectedApg": 5.1, "projectedRpg": 5.8, "projectedPER": 24.9, "projectedVORP": 5.4, "twoWayScore": 85 },
+    { "name": "Devin Booker", "team": "Phoenix Suns", "projectedPpg": 26.8, "projectedApg": 6.5, "projectedRpg": 4.3, "projectedPER": 23.8, "projectedVORP": 4.8, "twoWayScore": 79 },
+    { "name": "LeBron James", "team": "Los Angeles Lakers", "projectedPpg": 24.2, "projectedApg": 7.8, "projectedRpg": 7.2, "projectedPER": 24.1, "projectedVORP": 5.2, "twoWayScore": 88 },
+    { "name": "Stephen Curry", "team": "Golden State Warriors", "projectedPpg": 24.8, "projectedApg": 5.3, "projectedRpg": 4.5, "projectedPER": 23.2, "projectedVORP": 4.1, "twoWayScore": 76 }
   ]
 }
