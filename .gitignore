@@ -1,0 +1,6 @@
+# Add common ignores below
+node_modules/
+*.log
+.env
+dist/
+build/
