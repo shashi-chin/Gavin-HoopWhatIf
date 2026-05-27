@@ -215,31 +215,31 @@ const TEAM_BUTTERFLY_EFFECTS = {
       id: "okc-small-ball",
       label: "If they run their 5-out small lineup for 65%+ of playoff minutes",
       impact: +2.4,
-      explanation: "This is one of the most dominant lineups in modern basketball on both ends of the floor. When OKC goes small with Chet at center and multiple switchable wings, they become historically great at protecting the rim while still being able to switch everything. Most teams have no good answer for it. Fully leaning into this identity in the playoffs is an extremely high-leverage strategic decision that very few teams have the personnel to even attempt."
+      explanation: "This lineup is basically unstoppable when they use it a lot. With Chet at center and all these long, fast players around him, they can switch every single defender and still protect the rim super well. Most teams have no idea how to stop it. If OKC decides to play this way almost the whole playoffs, it could be one of the smartest (and scariest) things they do."
     },
     {
       id: "okc-chet-minutes",
       label: "If Chet Holmgren plays 34+ mpg as the primary center (not power forward)",
       impact: +2.1,
-      explanation: "This is a huge strategic detail most people miss. When Chet plays center (instead of power forward), OKC's defense transforms. They become elite at protecting the rim while keeping their signature switch-everything identity. It changes how opponents have to attack them in the half-court and creates massive advantages in transition. Very few teams in history have had a 7-footer who can do this at this level."
+      explanation: "Here's something cool most people don't think about: When Chet plays center instead of power forward, OKC's whole defense gets way better. He can protect the rim like a big guy but still switch onto guards like a wing. It's super rare to have a 7-footer who can do both. This one change makes their defense one of the hardest to play against in the playoffs."
     },
     {
       id: "okc-load-management",
       label: "If Shai & Chet average under 33 mpg from March onward",
       impact: +1.9,
-      explanation: "Young teams that manage minutes aggressively in the regular season often outperform expectations in the playoffs more than any other group. Fresh legs + athleticism is a cheat code."
+      explanation: "This one is pretty smart. Young teams like OKC that rest their best players more during the regular season often have way more energy when the playoffs get tough. Having fresh legs in May and June is like a secret superpower that a lot of teams don't use enough."
     },
     {
       id: "okc-zone-defense",
       label: "If they use a full-time zone defense for 25%+ of playoff possessions",
       impact: +2.8,
-      explanation: "Almost no modern elite team uses zone as a real weapon. If OKC becomes the first team in 15 years to make it work at a high level, it would completely break how opponents prepare for them."
+      explanation: "This would be pretty crazy if they actually did it. Almost nobody uses zone defense in the playoffs anymore because good teams are really good at attacking it. But if OKC made a zone work really well, it would completely mess up how other teams try to prepare for them. It would be a huge surprise."
     },
     {
       id: "okc-three-guard",
       label: "If they play a 3-guard 'super small' lineup (no Chet or JWill) for long stretches",
       impact: +2.3,
-      explanation: "This would be one of the smallest lineups in modern playoff history. The spacing + switchability would be insane, but it would also be incredibly risky. Pure chaos mode."
+      explanation: "This would be one of the tiniest teams you've ever seen in the playoffs. Three guards, no real bigs at all. They would be super fast and switch everything, but it would also be risky because they would get killed on the boards. It would be total chaos — in a fun way."
     }
   ],
   "Indiana Pacers": [
@@ -247,19 +247,19 @@ const TEAM_BUTTERFLY_EFFECTS = {
       id: "pacers-pace-control",
       label: "If they successfully force the entire series under 96 possessions per game",
       impact: +2.6,
-      explanation: "This is the ultimate 'identity vs matchup' question for Indiana. Their entire offense is built on playing at the fastest pace in basketball and generating easy transition looks. When a good defensive team successfully slows them down into a half-court game, Indiana's biggest advantage disappears. Forcing (or failing to force) a slow series is often the difference between a first-round exit and a deep run."
+      explanation: "Indiana plays the fastest basketball in the league. Their whole game is about running and getting easy baskets before the other team can set up. But if a really good defensive team forces them to play slow, all their speed advantage disappears. The team that controls the speed of the game usually wins the series."
     },
     {
       id: "pacers-turner-fouls",
       label: "If Myles Turner averages under 3.2 fouls per game in the playoffs",
       impact: +2.0,
-      explanation: "Turner's foul trouble is the hidden killer for Indiana. Every extra 8-10 minutes he stays on the floor without fouling completely changes how dangerous they are defensively."
+      explanation: "Myles Turner is really good at blocking shots, but he gets in foul trouble a lot. If he can stay out of foul trouble and play more minutes, Indiana's defense gets much better. This one thing can decide whether they win or lose in the playoffs."
     },
     {
       id: "pacers-intentional-slow",
       label: "If they intentionally play slow in the first half to 'set up' transition in the second half",
       impact: +2.2,
-      explanation: "This is a wild strategic idea that almost no one has tried at scale. Slow the game down early to tire the opponent out, then unleash their speed when the other team is gassed. High risk, nuclear reward."
+      explanation: "This would be a really smart (and sneaky) plan. Indiana could play slow on purpose at the beginning of games to make the other team tired. Then in the second half, when the other team is exhausted, Indiana could run them out of the gym. It sounds crazy but it could actually work."
     },
     {
       id: "pacers-haliburton-offball",
@@ -299,7 +299,7 @@ const TEAM_BUTTERFLY_EFFECTS = {
       id: "knicks-hartenstein",
       label: "If Isaiah Hartenstein is healthy and plays 30+ mpg in the playoffs",
       impact: +2.5,
-      explanation: "This is one of the most underappreciated playoff impacts in basketball. Hartenstein is an elite screener, roller, and versatile defender. When he's on the floor, it completely changes how defenses have to guard Brunson and the Knicks' bigs. His presence turns good lineups into elite ones. Few players have this kind of 'multiplier effect' on an entire team's identity."
+      explanation: "Hartenstein is one of those players who makes everyone around him better. He's great at setting screens, rolling to the basket, and defending different positions. When he's playing a lot, the whole Knicks team just plays better offense and defense. He's like the secret ingredient."
     },
     {
       id: "knicks-anunoby-defense",
@@ -343,7 +343,7 @@ const TEAM_BUTTERFLY_EFFECTS = {
       id: "nuggets-jokic-power-forward",
       label: "If they play Jokić at power forward with a stretch-5 next to him for long stretches",
       impact: +2.4,
-      explanation: "This would be an extremely rare 'twin towers with spacing' look. It could completely change how teams have to guard the Nuggets in the half-court. Very few teams have ever tried this at a high level."
+      explanation: "Most teams today play small and fast. But what if Denver played two big guys at the same time — one of them being Jokic? It would be really hard for the other team to score inside, and it would give them a huge advantage on the glass. It's old-school basketball but it could still work really well."
     }
   ],
   "Houston Rockets": [
@@ -365,19 +365,19 @@ const TEAM_BUTTERFLY_EFFECTS = {
       id: "bucks-giannis-point",
       label: "If Giannis plays point guard for 20+ mpg in the playoffs",
       impact: +2.3,
-      explanation: "This is a genuinely rare and interesting experiment. Giannis is so dominant as a creator that teams almost never see him play point guard at scale. When he does, it completely changes Milwaukee's spacing, pace, and how defenses have to load up on him. Very few players in NBA history have the combination of size, skill, and vision to make this work at a high level."
+      explanation: "Giannis is already a monster when he has the ball. But what if he became the main guy bringing the ball up the court and making plays for everyone else? It would change how the whole team plays. Not many teams have ever tried letting their best player be the point guard like this."
     },
     {
       id: "bucks-small-ball",
       label: "If they go extremely small with Giannis at center for long stretches",
       impact: +2.0,
-      explanation: "This would be one of the most unique 'positionless' experiments in the playoffs. Giannis protecting the rim while switching onto guards is a terrifying theoretical matchup."
+      explanation: "Imagine the biggest, strongest player on the court also being the one guarding the other team's quickest guards. That's what this would look like. It would be super confusing for the other team and could be a huge advantage for Milwaukee."
     },
     {
       id: "bucks-giannis-offball",
       label: "If Giannis plays 15+ mpg off-ball as a pure finisher and roller",
       impact: +2.2,
-      explanation: "Giannis is so good as a creator that teams forget how unstoppable he is when he doesn't have to carry the offense. This version of him in the playoffs would be terrifying."
+      explanation: "Giannis is already amazing when he has the ball in his hands. But when he doesn't have to create everything and can just run, cut, and finish plays, he becomes even harder to stop. This version of him could be one of the scariest things to guard in the playoffs."
     },
     {
       id: "bucks-load-management",
@@ -439,7 +439,7 @@ const TEAM_BUTTERFLY_EFFECTS = {
       id: "warriors-draymond-center",
       label: "If Draymond Green plays center for 20+ mpg in a series",
       impact: +2.4,
-      explanation: "This is one of the most famous and effective 'positionless' lineups in modern playoff history. When Draymond plays center with four shooters, Golden State creates constant spacing problems while still having elite defensive versatility. Very few teams have ever had a player who can protect the rim, switch onto guards, and facilitate from the 5 like Draymond can."
+      explanation: "This lineup is famous for a reason. Draymond plays center while four shooters surround him. It creates so much space that the other team doesn't know who to guard. Plus Draymond can still defend almost anyone. It's one of the smartest and hardest lineups to play against."
     },
     {
       id: "warriors-kuminga-minutes",
