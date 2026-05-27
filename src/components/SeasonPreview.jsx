@@ -336,6 +336,120 @@ const TEAM_BUTTERFLY_EFFECTS = {
       explanation: "Amen at center would be one of the most positionless experiments in modern playoffs. His combination of size, speed, and defensive IQ could create matchup nightmares that no traditional big can handle."
     }
   ],
+  "Milwaukee Bucks": [
+    {
+      id: "bucks-giannis-point",
+      label: "If Giannis plays point guard for 20+ mpg in the playoffs",
+      impact: +2.3,
+      explanation: "Giannis as a primary creator and decision-maker changes the entire offensive ecosystem. Very few teams have ever tried this at scale with a player of his size and skill."
+    },
+    {
+      id: "bucks-small-ball",
+      label: "If they go extremely small with Giannis at center for long stretches",
+      impact: +2.0,
+      explanation: "This would be one of the most unique 'positionless' experiments in the playoffs. Giannis protecting the rim while switching onto guards is a terrifying theoretical matchup."
+    }
+  ],
+  "Philadelphia 76ers": [
+    {
+      id: "sixers-embiid-power-forward",
+      label: "If Embiid plays power forward with a stretch-5 next to him",
+      impact: +2.1,
+      explanation: "Embiid at the 4 with a floor-spacing big is a lineup almost no one has seen at a high level. It would completely change how teams have to guard the pick-and-roll."
+    },
+    {
+      id: "sixers-maxey-offball",
+      label: "If Maxey plays significant minutes off-ball next to another creator",
+      impact: +1.9,
+      explanation: "Maxey as a pure off-ball scorer and cutter is an under-explored version of him. In the playoffs, this could make Philadelphia's offense much harder to scheme against."
+    }
+  ],
+  "Cleveland Cavaliers": [
+    {
+      id: "cavaliers-mobley-center",
+      label: "If Evan Mobley plays center full-time while Mitchell runs the offense",
+      impact: +2.2,
+      explanation: "Mobley as a true 5 changes Cleveland's defensive identity dramatically. His rim protection + switchability at the 5 would be one of the most versatile frontcourts in the league."
+    }
+  ],
+  "Los Angeles Lakers": [
+    {
+      id: "lakers-lebron-center",
+      label: "If LeBron plays center for 15+ mpg in the playoffs",
+      impact: +2.0,
+      explanation: "LeBron at the 5 is a lineup that has been surprisingly effective at times. It creates unique spacing and allows for extreme small-ball lineups that are very hard to match up with."
+    },
+    {
+      id: "lakers-three-big",
+      label: "If they play three bigs (AD + two others) for stretches",
+      impact: +1.7,
+      explanation: "Going big is almost extinct, but against certain matchups it can be a massive advantage. Very few teams have the personnel to even attempt this."
+    }
+  ],
+  "Golden State Warriors": [
+    {
+      id: "warriors-draymond-center",
+      label: "If Draymond Green plays center for 20+ mpg in a series",
+      impact: +2.4,
+      explanation: "Draymond at the 5 with four shooters around him is one of the most unique and successful small-ball experiments in modern basketball history. It's still terrifying when executed well."
+    }
+  ],
+  "Dallas Mavericks": [
+    {
+      id: "mavericks-luka-offball",
+      label: "If Luka plays significant off-ball minutes next to another creator",
+      impact: +2.1,
+      explanation: "Luka as an off-ball player is a version of him we almost never see. In the playoffs, this could unlock a completely different offensive dimension."
+    }
+  ],
+  "Minnesota Timberwolves": [
+    {
+      id: "wolves-gobert-offense",
+      label: "If they run actual offensive sets through Gobert as a passer",
+      impact: +1.8,
+      explanation: "Gobert as a playmaker from the short roll is an extremely rare and underused skill. If they actually leaned into it, it would create massive problems for drop coverage teams."
+    }
+  ],
+  "Phoenix Suns": [
+    {
+      id: "suns-booker-point",
+      label: "If Devin Booker plays primary point guard with KD off-ball",
+      impact: +1.9,
+      explanation: "Booker as the main creator with KD as a pure scorer is a version of this team we haven't seen enough. It could solve some of their half-court creation issues."
+    }
+  ],
+  "Los Angeles Clippers": [
+    {
+      id: "clippers-small-ball",
+      label: "If they go extremely small with Kawhi at power forward",
+      impact: +2.0,
+      explanation: "Kawhi as a 4 with multiple switchable wings is a nightmare matchup for most teams. This is one of the most versatile lineups in basketball when healthy."
+    }
+  ],
+  "Orlando Magic": [
+    {
+      id: "magic-ultra-big",
+      label: "If they play two traditional bigs + three long wings",
+      impact: +2.3,
+      explanation: "Orlando has the personnel to go extremely big and long. This would be one of the tallest and longest lineups in modern playoffs and could dominate the glass and paint."
+    }
+  ],
+  "Memphis Grizzlies": [
+    {
+      id: "grizzlies-ja-offball",
+      label: "If Ja Morant plays significant minutes off-ball",
+      impact: +2.0,
+      explanation: "Ja as an off-ball cutter and finisher instead of primary creator is a version of him we rarely see. It could make Memphis much harder to prepare for."
+    }
+  ],
+  "Miami Heat": [
+    {
+      id: "heat-culture",
+      label: "If their role players overperform their regular season numbers by 15%",
+      impact: +2.2,
+      explanation: "This is the classic Heat culture effect. When Miami's undrafted and overlooked players catch fire in the playoffs, it creates one of the hardest teams to scout in basketball."
+    }
+  ],
   "DEFAULT": [
     {
       id: "default-role-shooting",
