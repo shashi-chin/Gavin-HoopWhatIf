@@ -215,13 +215,13 @@ const TEAM_BUTTERFLY_EFFECTS = {
       id: "okc-small-ball",
       label: "If they run their 5-out small lineup for 65%+ of playoff minutes",
       impact: +2.4,
-      explanation: "This lineup has been historically dominant on both ends. Most teams are terrified of it. Committing to it fully in the playoffs is one of the highest-leverage strategic decisions in the entire league."
+      explanation: "This is one of the most dominant lineups in modern basketball on both ends of the floor. When OKC goes small with Chet at center and multiple switchable wings, they become historically great at protecting the rim while still being able to switch everything. Most teams have no good answer for it. Fully leaning into this identity in the playoffs is an extremely high-leverage strategic decision that very few teams have the personnel to even attempt."
     },
     {
       id: "okc-chet-minutes",
       label: "If Chet Holmgren plays 34+ mpg as the primary center (not power forward)",
       impact: +2.1,
-      explanation: "When Chet plays center instead of power forward, OKC's defense becomes one of the best in playoff history at protecting the rim while still switching everything. This is a massive hidden variable."
+      explanation: "This is a huge strategic detail most people miss. When Chet plays center (instead of power forward), OKC's defense transforms. They become elite at protecting the rim while keeping their signature switch-everything identity. It changes how opponents have to attack them in the half-court and creates massive advantages in transition. Very few teams in history have had a 7-footer who can do this at this level."
     },
     {
       id: "okc-load-management",
@@ -247,7 +247,7 @@ const TEAM_BUTTERFLY_EFFECTS = {
       id: "pacers-pace-control",
       label: "If they successfully force the entire series under 96 possessions per game",
       impact: +2.6,
-      explanation: "This is the single most important variable for Indiana. Their entire identity is built on pace and transition. If a series becomes a half-court war, they become an average team overnight."
+      explanation: "This is the ultimate 'identity vs matchup' question for Indiana. Their entire offense is built on playing at the fastest pace in basketball and generating easy transition looks. When a good defensive team successfully slows them down into a half-court game, Indiana's biggest advantage disappears. Forcing (or failing to force) a slow series is often the difference between a first-round exit and a deep run."
     },
     {
       id: "pacers-turner-fouls",
@@ -299,7 +299,7 @@ const TEAM_BUTTERFLY_EFFECTS = {
       id: "knicks-hartenstein",
       label: "If Isaiah Hartenstein is healthy and plays 30+ mpg in the playoffs",
       impact: +2.5,
-      explanation: "Hartenstein is the ultimate 'glue' player. His screening, rolling, and defensive versatility completely change how teams have to guard Brunson. This is the single biggest swing factor for New York."
+      explanation: "This is one of the most underappreciated playoff impacts in basketball. Hartenstein is an elite screener, roller, and versatile defender. When he's on the floor, it completely changes how defenses have to guard Brunson and the Knicks' bigs. His presence turns good lineups into elite ones. Few players have this kind of 'multiplier effect' on an entire team's identity."
     },
     {
       id: "knicks-anunoby-defense",
@@ -365,7 +365,7 @@ const TEAM_BUTTERFLY_EFFECTS = {
       id: "bucks-giannis-point",
       label: "If Giannis plays point guard for 20+ mpg in the playoffs",
       impact: +2.3,
-      explanation: "Giannis as a primary creator and decision-maker changes the entire offensive ecosystem. Very few teams have ever tried this at scale with a player of his size and skill."
+      explanation: "This is a genuinely rare and interesting experiment. Giannis is so dominant as a creator that teams almost never see him play point guard at scale. When he does, it completely changes Milwaukee's spacing, pace, and how defenses have to load up on him. Very few players in NBA history have the combination of size, skill, and vision to make this work at a high level."
     },
     {
       id: "bucks-small-ball",
@@ -439,7 +439,7 @@ const TEAM_BUTTERFLY_EFFECTS = {
       id: "warriors-draymond-center",
       label: "If Draymond Green plays center for 20+ mpg in a series",
       impact: +2.4,
-      explanation: "Draymond at the 5 with four shooters around him is one of the most unique and successful small-ball experiments in modern basketball history. It's still terrifying when executed well."
+      explanation: "This is one of the most famous and effective 'positionless' lineups in modern playoff history. When Draymond plays center with four shooters, Golden State creates constant spacing problems while still having elite defensive versatility. Very few teams have ever had a player who can protect the rim, switch onto guards, and facilitate from the 5 like Draymond can."
     },
     {
       id: "warriors-kuminga-minutes",
