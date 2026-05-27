@@ -205,10 +205,10 @@ const TEAM_PLAYOFF_PROFILES = {
   }
 }
 
-// === BUTTERFLY EFFECT SCENARIOS (DRAMATIC VERSION) ===
-// These are deliberately surprising and counter-intuitive.
-// Designed to make a stats-obsessed 13-year-old say "whoa, I never thought of that".
-// Impacts are bigger and more meaningful. Explanations are deeper and more mind-bending.
+// === BUTTERFLY EFFECT SCENARIOS (WILD BUT PLAUSIBLE EDITION) ===
+// These are deliberately "whoa, what if they actually tried that?" level.
+// Still grounded in real advanced stats, historical precedents, or logical extremes of current trends.
+// Perfect for blowing the mind of a stats-obsessed 13-year-old.
 const TEAM_BUTTERFLY_EFFECTS = {
   "Oklahoma City Thunder": [
     {
@@ -228,6 +228,18 @@ const TEAM_BUTTERFLY_EFFECTS = {
       label: "If Shai & Chet average under 33 mpg from March onward",
       impact: +1.9,
       explanation: "Young teams that manage minutes aggressively in the regular season often outperform expectations in the playoffs more than any other group. Fresh legs + athleticism is a cheat code."
+    },
+    {
+      id: "okc-zone-defense",
+      label: "If they use a full-time zone defense for 25%+ of playoff possessions",
+      impact: +2.8,
+      explanation: "Almost no modern elite team uses zone as a real weapon. If OKC becomes the first team in 15 years to make it work at a high level, it would completely break how opponents prepare for them."
+    },
+    {
+      id: "okc-three-guard",
+      label: "If they play a 3-guard 'super small' lineup (no Chet or JWill) for long stretches",
+      impact: +2.3,
+      explanation: "This would be one of the smallest lineups in modern playoff history. The spacing + switchability would be insane, but it would also be incredibly risky. Pure chaos mode."
     }
   ],
   "Indiana Pacers": [
@@ -242,6 +254,12 @@ const TEAM_BUTTERFLY_EFFECTS = {
       label: "If Myles Turner averages under 3.2 fouls per game in the playoffs",
       impact: +2.0,
       explanation: "Turner's foul trouble is the hidden killer for Indiana. Every extra 8-10 minutes he stays on the floor without fouling completely changes how dangerous they are defensively."
+    },
+    {
+      id: "pacers-intentional-slow",
+      label: "If they intentionally play slow in the first half to 'set up' transition in the second half",
+      impact: +2.2,
+      explanation: "This is a wild strategic idea that almost no one has tried at scale. Slow the game down early to tire the opponent out, then unleash their speed when the other team is gassed. High risk, nuclear reward."
     }
   ],
   "Boston Celtics": [
@@ -256,6 +274,12 @@ const TEAM_BUTTERFLY_EFFECTS = {
       label: "If Al Horford plays 24+ mpg as the starting center in a series",
       impact: +1.8,
       explanation: "Horford as a starter changes everything about Boston's half-court offense and defensive communication. It's like adding a second coach on the floor. Very few people appreciate how much he moves the needle."
+    },
+    {
+      id: "celtics-five-out-horford",
+      label: "If they play a true 5-out lineup with Horford at center for 30+ mpg",
+      impact: +2.5,
+      explanation: "This would be one of the most spacing-heavy lineups in playoff history. Horford spacing the floor at center is extremely rare and would make Boston's offense look like a video game."
     }
   ],
   "New York Knicks": [
@@ -270,6 +294,12 @@ const TEAM_BUTTERFLY_EFFECTS = {
       label: "If OG Anunoby plays 38+ mpg while guarding the opponent's best wing",
       impact: +1.7,
       explanation: "OG is one of the best playoff defenders alive. When he's healthy and locked in, he can take the best player off the board for the other team. This is New York's real X-factor."
+    },
+    {
+      id: "knicks-two-big",
+      label: "If they play Mitchell Robinson + Isaiah Hartenstein together for 18+ mpg per game",
+      impact: +2.1,
+      explanation: "Two traditional bigs at the same time is almost extinct in modern basketball. If the Knicks made it work, it would force opponents to completely rethink how they attack the paint."
     }
   ],
   "Denver Nuggets": [
@@ -284,6 +314,12 @@ const TEAM_BUTTERFLY_EFFECTS = {
       label: "If Aaron Gordon guards the opposing team's best forward the entire series",
       impact: +1.6,
       explanation: "Gordon is an elite playoff defender who doesn't get enough credit. When he takes the opponent's best wing off the board, Denver's defense jumps multiple levels."
+    },
+    {
+      id: "nuggets-jokic-power-forward",
+      label: "If they play Jokić at power forward with a stretch-5 next to him for long stretches",
+      impact: +2.4,
+      explanation: "This would be an extremely rare 'twin towers with spacing' look. It could completely change how teams have to guard the Nuggets in the half-court. Very few teams have ever tried this at a high level."
     }
   ],
   "Houston Rockets": [
@@ -292,6 +328,12 @@ const TEAM_BUTTERFLY_EFFECTS = {
       label: "If they play their ultra-small lineup (no traditional big) for 40%+ of minutes",
       impact: +2.0,
       explanation: "Houston's small lineups are surprisingly dominant. Most people don't realize how good they are at switching and protecting the rim without a traditional center. This is a real strategic weapon."
+    },
+    {
+      id: "rockets-amen-center",
+      label: "If Amen Thompson plays center for 15+ mpg in the playoffs",
+      impact: +2.7,
+      explanation: "Amen at center would be one of the most positionless experiments in modern playoffs. His combination of size, speed, and defensive IQ could create matchup nightmares that no traditional big can handle."
     }
   ],
   "DEFAULT": [
@@ -300,6 +342,12 @@ const TEAM_BUTTERFLY_EFFECTS = {
       label: "If their three most important role players all shoot above league average from 3 in the playoffs",
       impact: +1.8,
       explanation: "This is one of the most underappreciated advantages in basketball. When role players can actually space the floor, it makes the stars 30% harder to guard. Spacing is the real cheat code."
+    },
+    {
+      id: "default-wild-experiment",
+      label: "If they try a completely new defensive scheme that almost no one has used in the playoffs before",
+      impact: +2.5,
+      explanation: "Sometimes the biggest advantage isn't talent — it's making the opponent prepare for something they've never seen. A truly original scheme could be worth multiple points per 100 possessions."
     }
   ]
 }
