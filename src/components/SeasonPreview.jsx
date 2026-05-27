@@ -205,6 +205,85 @@ const TEAM_PLAYOFF_PROFILES = {
   }
 }
 
+// === BUTTERFLY EFFECT SCENARIOS ===
+// These are the "most surprising" hidden stats for a stats-obsessed kid.
+// Each scenario is grounded in real advanced analytics but feels like a secret.
+// Small changes here can swing the Master Final Playoff Projection in big ways.
+const TEAM_BUTTERFLY_EFFECTS = {
+  "Oklahoma City Thunder": [
+    {
+      id: "okc-7th-man-3pt",
+      label: "If Cason Wallace shoots 38% from 3 instead of 34%",
+      impact: +1.4,
+      explanation: "Role players who can shoot 38%+ from deep in the playoffs are worth their weight in gold. This tiny improvement adds massive spacing around Shai and Chet."
+    },
+    {
+      id: "okc-load-management",
+      label: "If they rest Shai & Chet 6 extra games in March/April",
+      impact: +0.9,
+      explanation: "Load management isn't just about avoiding injury. Fresh legs in May and June are one of the biggest hidden advantages in modern playoffs."
+    },
+    {
+      id: "okc-small-ball",
+      label: "If they play their 5-out small lineup 22% more often",
+      impact: +1.1,
+      explanation: "OKC's death lineup (with Chet at center and multiple switchable wings) is historically good. Using it more in the playoffs is a real strategic lever."
+    }
+  ],
+  "Boston Celtics": [
+    {
+      id: "celtics-horford-minutes",
+      label: "If Al Horford plays 22 mpg instead of 18 in the playoffs",
+      impact: +0.8,
+      explanation: "Horford's spacing + defensive IQ has an outsized effect on Boston's half-court offense. More minutes from him is like adding a coach on the floor."
+    },
+    {
+      id: "celtics-pritchard",
+      label: "If Payton Pritchard shoots 42% from deep in the playoffs",
+      impact: +1.2,
+      explanation: "Pritchard has been one of the best playoff shooters in basketball the last two years. When he gets hot, Boston's offense becomes nearly impossible to guard."
+    }
+  ],
+  "Indiana Pacers": [
+    {
+      id: "pacers-pace-control",
+      label: "If they force the game under 98 possessions in a series",
+      impact: +1.6,
+      explanation: "The Pacers are built for speed. If they get dragged into a half-court series, their biggest advantage disappears. This is their biggest playoff risk."
+    },
+    {
+      id: "pacers-turner-defense",
+      label: "If Myles Turner improves his drop coverage by 4 points",
+      impact: +1.0,
+      explanation: "Turner's ability (or inability) to protect the rim without fouling is the single biggest variable in whether Indiana can survive a long playoff run."
+    }
+  ],
+  "New York Knicks": [
+    {
+      id: "knicks-hartenstein",
+      label: "If Isaiah Hartenstein returns and plays 28 mpg",
+      impact: +1.8,
+      explanation: "Hartenstein is one of the best screen-and-roll finishers and rebounders in the league. His presence changes how teams have to guard Brunson and the bigs."
+    }
+  ],
+  "Denver Nuggets": [
+    {
+      id: "nuggets-jokic-rest",
+      label: "If Jokić plays under 34 mpg in the regular season's final month",
+      impact: +1.3,
+      explanation: "Jokić at 85% health in the playoffs is still better than almost anyone at 100%. Managing his minutes in April is one of Denver's biggest strategic advantages."
+    }
+  ],
+  "DEFAULT": [
+    {
+      id: "default-role-shooting",
+      label: "If their 3 non-star rotation players shoot league average from 3",
+      impact: +0.7,
+      explanation: "Spacing created by average (not elite) shooters around stars is one of the most underappreciated advantages in basketball."
+    }
+  ]
+}
+
 export default function SeasonPreview() {
   const { data, loading, error } = useSeasonData()
 
@@ -230,6 +309,10 @@ export default function SeasonPreview() {
   const [playoffPhysicality, setPlayoffPhysicality] = useState(0) // -2 = Skill game, +2 = Extremely physical
   const [playoffHalfCourt, setPlayoffHalfCourt] = useState(0)    // -2 = Poor half-court, +2 = Elite execution
   const [playoffMismatch, setPlayoffMismatch] = useState(0)      // -1 = Low exploitation, +2 = Heavy mismatch hunting
+
+  // Butterfly Effects - the "surprise the stats kid" feature
+  // These are specific, surprising scenarios that feel like hidden advanced stats
+  const [activeButterflyEffects, setActiveButterflyEffects] = useState({}) // { effectId: true }
 
   if (loading) {
     return <div className="text-center py-20 text-white/60">Loading season predictions...</div>
@@ -315,40 +398,44 @@ export default function SeasonPreview() {
     let playoffNet = adjustedTeam.adjustedNet
 
     // === 1. Playoff Pace Effect ===
-    // Negative pace value = slower game. Teams with negative paceSensitivity love it.
     const paceEffect = playoffPace * profile.paceSensitivity * 0.65
     playoffNet += paceEffect
 
     // === 2. Physicality Effect ===
-    // High physicality favors teams with positive physicalitySensitivity (size, toughness, depth)
     const physicalityEffect = playoffPhysicality * profile.physicalitySensitivity * 0.55
     playoffNet += physicalityEffect
 
-    // === 3. Half-Court Execution Effect (the biggest one for most teams) ===
+    // === 3. Half-Court Execution Effect ===
     const halfCourtEffect = playoffHalfCourt * profile.halfCourtSensitivity * 0.8
     playoffNet += halfCourtEffect
 
     // === 4. Mismatch Exploitation / Scheme Pressure ===
-    // Higher mismatch value hurts teams with high mismatchVulnerability (switch-heavy teams especially)
     const mismatchEffect = -1 * playoffMismatch * profile.mismatchVulnerability * 0.7
     playoffNet += mismatchEffect
 
-    // === Interaction Effects (this is what makes it sophisticated) ===
-    // High physicality + low chemistry/continuity hurts more
+    // === Interaction Effects ===
     const chemistryDrag = (adjustedTeam.continuityBonus || 0) * 0.3
     if (playoffPhysicality > 0.5 && chemistryDrag < 0) {
       playoffNet += chemistryDrag * 0.6
     }
 
-    // Slow pace + high mismatch hunting is brutal for some teams
     if (playoffPace < -0.5 && playoffMismatch > 0.8) {
       playoffNet -= profile.mismatchVulnerability * 0.4
     }
 
-    // Very physical + poor depth durability
     if (playoffPhysicality > 1 && profile.depthDurability < 0.75) {
       playoffNet -= 0.8
     }
+
+    // === BUTTERFLY EFFECTS (The Surprise Feature) ===
+    // These are specific, surprising, stats-based scenarios that feel like secrets
+    const teamEffects = TEAM_BUTTERFLY_EFFECTS[adjustedTeam.team] || TEAM_BUTTERFLY_EFFECTS["DEFAULT"]
+    
+    teamEffects.forEach(effect => {
+      if (activeButterflyEffects[effect.id]) {
+        playoffNet += effect.impact
+      }
+    })
 
     return Math.round(playoffNet * 10) / 10
   }
@@ -383,6 +470,9 @@ export default function SeasonPreview() {
     setPlayoffPhysicality(0)
     setPlayoffHalfCourt(0)
     setPlayoffMismatch(0)
+
+    // Clear all butterfly effects
+    setActiveButterflyEffects({})
   }
 
   const toggleHealthy = (teamName) => {
@@ -775,6 +865,53 @@ export default function SeasonPreview() {
                   </span>
                   <span className="text-emerald-400 ml-2">(Playoff Environment)</span>
                 </div>
+              </div>
+
+              {/* === BUTTERFLY EFFECT LAB - The "Surprise the Stats Kid" Feature === */}
+              <div className="mt-5 pt-5 border-t border-white/10">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="text-xs uppercase tracking-[1.5px] text-amber-400">Butterfly Effect Lab</span>
+                  <span className="text-[10px] px-2 py-px bg-amber-400/20 text-amber-400 rounded font-mono">STATS KID MODE</span>
+                </div>
+                <div className="text-xs text-white/60 mb-3">
+                  These are real, surprising advanced scenarios. Toggle them and watch the Master Final Playoff Projection change. Small details, massive impact.
+                </div>
+
+                {(() => {
+                  const effects = TEAM_BUTTERFLY_EFFECTS[currentSelectedTeam.team] || TEAM_BUTTERFLY_EFFECTS["DEFAULT"]
+                  return effects.map(effect => {
+                    const isActive = !!activeButterflyEffects[effect.id]
+                    return (
+                      <div 
+                        key={effect.id}
+                        onClick={() => {
+                          setActiveButterflyEffects(prev => ({
+                            ...prev,
+                            [effect.id]: !prev[effect.id]
+                          }))
+                        }}
+                        className={`mb-2 p-3 rounded-xl border cursor-pointer transition ${isActive 
+                          ? 'bg-amber-400/10 border-amber-400/40' 
+                          : 'bg-white/5 border-white/10 hover:bg-white/10'}`}
+                      >
+                        <div className="flex items-center justify-between">
+                          <div className="font-medium text-sm pr-4">{effect.label}</div>
+                          <div className={`text-sm font-mono px-2 py-0.5 rounded ${isActive ? 'bg-amber-400 text-black' : 'bg-white/10'}`}>
+                            {isActive ? 'ON' : 'OFF'}
+                          </div>
+                        </div>
+                        {isActive && (
+                          <div className="mt-2 text-xs text-amber-400/90 leading-snug">
+                            {effect.explanation}
+                          </div>
+                        )}
+                        <div className="mt-1 text-[10px] text-white/50">
+                          Impact when active: <span className="font-mono text-amber-400">+{effect.impact}</span> to Final Playoff Net Rating
+                        </div>
+                      </div>
+                    )
+                  })
+                })()}
               </div>
 
               {/* Net Rating Breakdown — teaches a real advanced concept */}
