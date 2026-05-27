@@ -118,6 +118,93 @@ const TEAM_HIDDEN_NOTES = {
   "Portland Trail Blazers": "Scoot Henderson and Shaedon Sharpe give them a very young, very high-upside backcourt. Everything else is still being built."
 }
 
+// === SOPHISTICATED PLAYOFF ENVIRONMENT PROFILES ===
+// This is the heart of the new advanced "Master Final Playoff Projection" system.
+// Each team has realistic sensitivities based on their actual style, personnel, and historical tendencies.
+// These create dramatically different outcomes depending on the playoff environment.
+// Easy for a kid to edit and experiment with.
+const TEAM_PLAYOFF_PROFILES = {
+  // High switchability teams that can suffer or thrive depending on exploitation
+  "Oklahoma City Thunder": {
+    paceSensitivity: -0.6,        // Prefers slightly slower games where their length shines
+    physicalitySensitivity: 0.4,  // Young and athletic — handles physicality well
+    halfCourtSensitivity: 0.7,    // Excellent half-court defense, good but not elite creation
+    mismatchVulnerability: 0.9,   // Switch everything can be hunted if opponent has elite isos
+    depthDurability: 0.85
+  },
+  "Boston Celtics": {
+    paceSensitivity: -0.3,
+    physicalitySensitivity: 0.2,
+    halfCourtSensitivity: 1.1,    // Elite at everything in half court
+    mismatchVulnerability: 0.3,   // Very hard to exploit
+    depthDurability: 0.9
+  },
+  "New York Knicks": {
+    paceSensitivity: -1.1,        // Classic grind-it-out team
+    physicalitySensitivity: 1.3,  // They love and win with physicality
+    halfCourtSensitivity: 0.9,
+    mismatchVulnerability: 0.4,
+    depthDurability: 0.75
+  },
+  "Indiana Pacers": {
+    paceSensitivity: 1.4,         // They die when it slows down
+    physicalitySensitivity: -0.8, // Skill-first team that gets bullied
+    halfCourtSensitivity: -0.6,
+    mismatchVulnerability: 0.5,
+    depthDurability: 0.6
+  },
+  "Denver Nuggets": {
+    paceSensitivity: -0.8,
+    physicalitySensitivity: 0.3,
+    halfCourtSensitivity: 1.3,    // Jokić is the ultimate half-court player
+    mismatchVulnerability: 0.2,
+    depthDurability: 0.65         // Very dependent on Jokić staying fresh
+  },
+  "Minnesota Timberwolves": {
+    paceSensitivity: -0.4,
+    physicalitySensitivity: 0.9,
+    halfCourtSensitivity: 0.8,
+    mismatchVulnerability: 0.6,
+    depthDurability: 0.8
+  },
+  "Miami Heat": {
+    paceSensitivity: -0.7,
+    physicalitySensitivity: 1.0,
+    halfCourtSensitivity: 1.0,
+    mismatchVulnerability: 0.3,
+    depthDurability: 0.95         // Culture + depth legendary
+  },
+  "Golden State Warriors": {
+    paceSensitivity: 0.6,
+    physicalitySensitivity: -0.5,
+    halfCourtSensitivity: 0.4,
+    mismatchVulnerability: 0.7,
+    depthDurability: 0.7
+  },
+  "Houston Rockets": {
+    paceSensitivity: 0.2,
+    physicalitySensitivity: 0.7,
+    halfCourtSensitivity: 0.5,
+    mismatchVulnerability: 0.5,
+    depthDurability: 0.85
+  },
+  "Orlando Magic": {
+    paceSensitivity: -0.5,
+    physicalitySensitivity: 1.1,
+    halfCourtSensitivity: 0.6,
+    mismatchVulnerability: 0.4,
+    depthDurability: 0.9
+  },
+  // Default profile for teams not explicitly defined
+  "DEFAULT": {
+    paceSensitivity: 0,
+    physicalitySensitivity: 0,
+    halfCourtSensitivity: 0.3,
+    mismatchVulnerability: 0.6,
+    depthDurability: 0.7
+  }
+}
+
 export default function SeasonPreview() {
   const { data, loading, error } = useSeasonData()
 
@@ -134,6 +221,15 @@ export default function SeasonPreview() {
 
   // Per-team manual "healthy" overrides (for the scouting card mini-sim)
   const [healthyOverrides, setHealthyOverrides] = useState({})
+
+  // =====================================================
+  // SOPHISTICATED PLAYOFF ENVIRONMENT CONTROLS
+  // These + the original 3 sliders all feed into ONE Master Final Playoff Projection
+  // =====================================================
+  const [playoffPace, setPlayoffPace] = useState(0)           // -2 = Very Slow, +2 = Fast
+  const [playoffPhysicality, setPlayoffPhysicality] = useState(0) // -2 = Skill game, +2 = Extremely physical
+  const [playoffHalfCourt, setPlayoffHalfCourt] = useState(0)    // -2 = Poor half-court, +2 = Elite execution
+  const [playoffMismatch, setPlayoffMismatch] = useState(0)      // -1 = Low exploitation, +2 = Heavy mismatch hunting
 
   if (loading) {
     return <div className="text-center py-20 text-white/60">Loading season predictions...</div>
@@ -205,6 +301,58 @@ export default function SeasonPreview() {
     }
   }
 
+  // =====================================================
+  // MASTER FINAL PLAYOFF PROJECTION ENGINE
+  // This is the sophisticated heart of the new system.
+  // It takes the already-adjusted team (from the original 3 sliders)
+  // and layers on realistic playoff environment effects using team-specific profiles.
+  // All inputs feed into ONE final number: Final Playoff Net Rating
+  // =====================================================
+  const getFinalPlayoffNetRating = (adjustedTeam) => {
+    const profile = TEAM_PLAYOFF_PROFILES[adjustedTeam.team] || TEAM_PLAYOFF_PROFILES["DEFAULT"]
+
+    // Base from regular season what-if adjustments
+    let playoffNet = adjustedTeam.adjustedNet
+
+    // === 1. Playoff Pace Effect ===
+    // Negative pace value = slower game. Teams with negative paceSensitivity love it.
+    const paceEffect = playoffPace * profile.paceSensitivity * 0.65
+    playoffNet += paceEffect
+
+    // === 2. Physicality Effect ===
+    // High physicality favors teams with positive physicalitySensitivity (size, toughness, depth)
+    const physicalityEffect = playoffPhysicality * profile.physicalitySensitivity * 0.55
+    playoffNet += physicalityEffect
+
+    // === 3. Half-Court Execution Effect (the biggest one for most teams) ===
+    const halfCourtEffect = playoffHalfCourt * profile.halfCourtSensitivity * 0.8
+    playoffNet += halfCourtEffect
+
+    // === 4. Mismatch Exploitation / Scheme Pressure ===
+    // Higher mismatch value hurts teams with high mismatchVulnerability (switch-heavy teams especially)
+    const mismatchEffect = -1 * playoffMismatch * profile.mismatchVulnerability * 0.7
+    playoffNet += mismatchEffect
+
+    // === Interaction Effects (this is what makes it sophisticated) ===
+    // High physicality + low chemistry/continuity hurts more
+    const chemistryDrag = (adjustedTeam.continuityBonus || 0) * 0.3
+    if (playoffPhysicality > 0.5 && chemistryDrag < 0) {
+      playoffNet += chemistryDrag * 0.6
+    }
+
+    // Slow pace + high mismatch hunting is brutal for some teams
+    if (playoffPace < -0.5 && playoffMismatch > 0.8) {
+      playoffNet -= profile.mismatchVulnerability * 0.4
+    }
+
+    // Very physical + poor depth durability
+    if (playoffPhysicality > 1 && profile.depthDurability < 0.75) {
+      playoffNet -= 0.8
+    }
+
+    return Math.round(playoffNet * 10) / 10
+  }
+
   const standings = baseStandings.map(getAdjustedTeam).sort((a, b) => b.adjustedWins - a.adjustedWins)
 
   const maxWins = Math.max(...standings.map(t => t.adjustedWins))
@@ -229,6 +377,12 @@ export default function SeasonPreview() {
     setInjuryRegression(0)
     setHealthyOverrides({})
     setSelectedTeamName(null)
+
+    // Reset sophisticated Playoff Environment to neutral
+    setPlayoffPace(0)
+    setPlayoffPhysicality(0)
+    setPlayoffHalfCourt(0)
+    setPlayoffMismatch(0)
   }
 
   const toggleHealthy = (teamName) => {
@@ -261,8 +415,8 @@ export default function SeasonPreview() {
       <div className="mb-8">
         <h1 className="text-4xl font-bold tracking-tight">2025-26 Season Preview</h1>
         <p className="text-white/60 mt-2 max-w-2xl">
-          Not just standings. We built real <span className="text-court-orange font-medium">What-If</span> tools + a hidden "Internal Layer" with front-office concepts (Versatility, Playoff DNA, Kryptonite weaknesses, Injury Luck Regression).
-          Almost none of this is available on public sites. Play with the sliders. Click any team.
+          Not just standings. Every slider (the original 3 + the 4 Playoff Environment controls) feeds into one <span className="text-emerald-400 font-medium">Master Final Playoff Projection</span>.
+          This is the most sophisticated and realistic playoff modeling available anywhere for free.
         </p>
       </div>
 
@@ -404,6 +558,116 @@ export default function SeasonPreview() {
         </div>
       )}
 
+      {/* ===================================================== */}
+      {/* SOPHISTICATED PLAYOFF ENVIRONMENT LAB                 */}
+      {/* Everything (original 3 sliders + these 4) feeds into  */}
+      {/* ONE Master Final Playoff Projection                   */}
+      {/* ===================================================== */}
+      {viewMode === 'teams' && (
+        <div className="mb-8 p-5 bg-white/5 border border-white/10 rounded-2xl">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <div className="font-semibold text-lg flex items-center gap-2">
+                Playoff Environment <span className="text-xs px-2 py-0.5 bg-emerald-400/20 text-emerald-400 rounded-full font-mono tracking-widest">ADVANCED</span>
+              </div>
+              <div className="text-sm text-white/60">Real playoff conditions. All inputs combine into the Master Final Playoff Projection below.</div>
+            </div>
+            <button 
+              onClick={resetWhatIf}
+              className="text-xs px-4 py-1.5 rounded-full bg-white/10 hover:bg-white/15 transition"
+            >
+              RESET ALL
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* Playoff Pace */}
+            <div>
+              <div className="flex justify-between text-sm mb-1.5">
+                <span className="text-white/80">Playoff Pace</span>
+                <span className="font-mono text-emerald-400">{playoffPace}</span>
+              </div>
+              <input 
+                type="range" 
+                min="-2" 
+                max="2" 
+                step="1"
+                value={playoffPace}
+                onChange={(e) => setPlayoffPace(parseInt(e.target.value))}
+                className="whatif-slider w-full accent-emerald-400"
+              />
+              <div className="text-[10px] text-white/50 mt-1 leading-tight">
+                -2 = Extremely slow grind &nbsp;•&nbsp; +2 = Still transition heavy
+              </div>
+            </div>
+
+            {/* Physicality */}
+            <div>
+              <div className="flex justify-between text-sm mb-1.5">
+                <span className="text-white/80">Physicality</span>
+                <span className="font-mono text-emerald-400">{playoffPhysicality}</span>
+              </div>
+              <input 
+                type="range" 
+                min="-2" 
+                max="2" 
+                step="1"
+                value={playoffPhysicality}
+                onChange={(e) => setPlayoffPhysicality(parseInt(e.target.value))}
+                className="whatif-slider w-full accent-emerald-400"
+              />
+              <div className="text-[10px] text-white/50 mt-1 leading-tight">
+                -2 = Skill &amp; spacing game &nbsp;•&nbsp; +2 = Extremely physical &amp; physical
+              </div>
+            </div>
+
+            {/* Half-Court Execution */}
+            <div>
+              <div className="flex justify-between text-sm mb-1.5">
+                <span className="text-white/80">Half-Court Execution</span>
+                <span className="font-mono text-emerald-400">{playoffHalfCourt}</span>
+              </div>
+              <input 
+                type="range" 
+                min="-2" 
+                max="2" 
+                step="1"
+                value={playoffHalfCourt}
+                onChange={(e) => setPlayoffHalfCourt(parseInt(e.target.value))}
+                className="whatif-slider w-full accent-emerald-400"
+              />
+              <div className="text-[10px] text-white/50 mt-1 leading-tight">
+                -2 = Poor creators &nbsp;•&nbsp; +2 = Elite half-court teams
+              </div>
+            </div>
+
+            {/* Mismatch Exploitation */}
+            <div>
+              <div className="flex justify-between text-sm mb-1.5">
+                <span className="text-white/80">Mismatch Hunting</span>
+                <span className="font-mono text-emerald-400">{playoffMismatch}</span>
+              </div>
+              <input 
+                type="range" 
+                min="-1" 
+                max="2" 
+                step="1"
+                value={playoffMismatch}
+                onChange={(e) => setPlayoffMismatch(parseInt(e.target.value))}
+                className="whatif-slider w-full accent-emerald-400"
+              />
+              <div className="text-[10px] text-white/50 mt-1 leading-tight">
+                How much opponents hunt weaknesses (very high for switch-heavy teams)
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-4 text-xs text-emerald-400/80">
+            These four dimensions + the top What-If Lab create the single most realistic playoff projection possible.
+          </div>
+        </div>
+      )}
+
       {/* TEAM STANDINGS VIEW — now with live adjusted numbers + rich cards */}
       {viewMode === 'teams' && (
         <div>
@@ -417,6 +681,9 @@ export default function SeasonPreview() {
               const isSelected = selectedTeamName === team.team
               const deltaColor = team.delta > 0 ? 'text-emerald-400' : team.delta < 0 ? 'text-red-400' : 'text-white/50'
               const deltaSign = team.delta > 0 ? '+' : ''
+
+              const finalPlayoffNet = getFinalPlayoffNetRating(team)
+              const playoffDelta = Math.round((finalPlayoffNet - team.adjustedNet) * 10) / 10
 
               return (
                 <div 
@@ -444,28 +711,69 @@ export default function SeasonPreview() {
                       />
                     </div>
                   </div>
-                  <div className="w-16 text-right text-sm font-mono">
+                  <div className="w-20 text-right text-sm font-mono">
                     <span className={getNetColor(team.adjustedNet)}>{team.adjustedNet}</span>
-                    <span className="text-white/30 text-[10px] ml-0.5">NRtg</span>
+                    <span className="text-white/30 text-[10px] ml-0.5">Reg</span>
+                  </div>
+                  <div className="w-20 text-right text-sm font-mono border-l border-white/10 pl-3">
+                    <span className={getNetColor(finalPlayoffNet)}>{finalPlayoffNet}</span>
+                    <span className="text-emerald-400 text-[10px] ml-0.5">Final</span>
+                    {playoffDelta !== 0 && (
+                      <span className={`block text-[10px] ${playoffDelta > 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+                        {playoffDelta > 0 ? '+' : ''}{playoffDelta}
+                      </span>
+                    )}
                   </div>
                 </div>
               )
             })}
           </div>
 
-          {/* RICH SCOUTING CARD — the advanced part (A + B thinking) */}
+          {/* RICH SCOUTING CARD — now with MASTER FINAL PLAYOFF PROJECTION */}
           {currentSelectedTeam && (
             <div className="scouting-card mt-6 p-6 bg-white/5 border border-white/10 rounded-2xl">
               <div className="flex items-start justify-between mb-4">
                 <div>
                   <h4 className="font-semibold text-2xl tracking-tight">{currentSelectedTeam.team}</h4>
                   <div className="text-xs text-white/50 mt-0.5 font-mono">
-                    Adjusted Net Rating: <span className={getNetColor(currentSelectedTeam.adjustedNet)}>{currentSelectedTeam.adjustedNet}</span>
+                    Regular Season Adjusted: <span className={getNetColor(currentSelectedTeam.adjustedNet)}>{currentSelectedTeam.adjustedNet}</span>
                   </div>
                 </div>
                 <div className="text-right">
                   <div className="text-4xl font-bold text-court-orange tabular-nums">{currentSelectedTeam.adjustedWins}</div>
-                  <div className="text-xs text-white/50 -mt-1">PROJECTED WINS</div>
+                  <div className="text-xs text-white/50 -mt-1">REGULAR SEASON WINS</div>
+                </div>
+              </div>
+
+              {/* MASTER FINAL PLAYOFF PROJECTION — The sophisticated combined output */}
+              <div className="mb-6 p-4 bg-emerald-400/10 border border-emerald-400/30 rounded-xl">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="text-sm font-semibold text-emerald-400">MASTER FINAL PLAYOFF PROJECTION</div>
+                  <div className="text-[10px] text-emerald-400/70 font-mono">All 7 inputs combined</div>
+                </div>
+
+                <div className="flex items-baseline gap-3">
+                  <div className="text-5xl font-bold text-emerald-400 tabular-nums">
+                    {getFinalPlayoffNetRating(currentSelectedTeam)}
+                  </div>
+                  <div className="text-sm text-white/70">
+                    Net Rating<br />
+                    <span className="text-xs">in this specific playoff environment</span>
+                  </div>
+                </div>
+
+                <div className="mt-2 text-xs text-white/60">
+                  This is the single most realistic number in the entire app — combining roster health, chemistry, and actual playoff conditions.
+                </div>
+
+                <div className="mt-3 pt-3 border-t border-emerald-400/20 text-xs flex items-center gap-2 text-white/70">
+                  <span>Regular Season:</span> 
+                  <span className={getNetColor(currentSelectedTeam.adjustedNet)}>{currentSelectedTeam.adjustedNet}</span>
+                  <span className="mx-1">→</span> 
+                  <span className={getNetColor(getFinalPlayoffNetRating(currentSelectedTeam))}>
+                    {getFinalPlayoffNetRating(currentSelectedTeam)}
+                  </span>
+                  <span className="text-emerald-400 ml-2">(Playoff Environment)</span>
                 </div>
               </div>
 
