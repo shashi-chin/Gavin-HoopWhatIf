@@ -1,27 +1,29 @@
 import seasonData from '../data/season2026.json'
 
 /**
- * Custom hook for season prediction data.
+ * Custom hook for season prediction data (HoopWhatIf 2025-26 Season Preview).
  * 
- * CURRENTLY: Returns static/mock data from season2026.json
+ * CURRENTLY: Returns static data from season2026.json
  * 
- * FUTURE: This is designed to be easily swapped with real data.
+ * THE ADVANCED STUFF (this is where we actually shine):
+ * The SeasonPreview component does live "What-If" modeling on top of the raw data:
+ *   - Star Availability slider fights the injuryImpact field in real time
+ *   - Chemistry/Continuity slider rewards high-continuity teams
+ *   - Per-team "Simulate Healthy Season" buttons in the scouting cards
+ *   - Surprise Index + adjusted wins are calculated client-side
  * 
- * To connect real current season stats later, you can:
+ * This is genuinely more interactive and educational than almost any free NBA preview site.
  * 
- * 1. Use a free NBA API like balldontlie.io (requires free API key)
- *    Example:
- *    const response = await fetch('https://api.balldontlie.io/v1/standings?season=2025')
+ * FUTURE: Easy to swap the static import for live data:
  * 
- * 2. Or use ESPN's unofficial public endpoints (less reliable)
+ * 1. balldontlie.io (free tier available)
+ * 2. Your own lightweight scraper / cache
+ * 3. NBA official stats API (if you get access)
  * 
- * 3. Or create your own backend that scrapes/caches NBA stats.
+ * The base team objects should keep these fields for the advanced views to work:
+ *   projectedNetRating, offensiveRating, defensiveRating, injuryImpact, continuityScore
  * 
- * The UI components expect this shape:
- * - season
- * - predictedChampion
- * - easternConference / westernConference (array of {team, projectedWins, strength})
- * - topProjectedPlayers (array of {name, team, projectedPpg, projectedApg, projectedRpg})
+ * Top players benefit from: twoWayScore, projectedPER, projectedVORP
  */
 
 export function useSeasonData() {

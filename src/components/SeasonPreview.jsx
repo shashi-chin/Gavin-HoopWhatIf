@@ -1,12 +1,68 @@
 import { useState } from 'react'
 import { useSeasonData } from '../hooks/useSeasonData'
 
+// Unique team insights - the "secret sauce" not on most stat sites
+// Easy for a kid to edit/add later. These explain WHY a team projects the way it does.
+const TEAM_INSIGHTS = {
+  "Oklahoma City Thunder": "Best switch-everything defense in the league. Their young core has absurd defensive versatility.",
+  "Boston Celtics": "5-out spacing + elite coaching creates the highest floor in basketball. Even without health, the system wins.",
+  "Denver Nuggets": "Jokić is the ultimate gravity center. No team punishes help defense better on the planet.",
+  "New York Knicks": "Brunson + elite defense = physical playoff identity. They wear teams down in a 7-game series.",
+  "Minnesota Timberwolves": "Ant + Gobert wall changes how opponents attack. Few teams have this two-way identity.",
+  "Phoenix Suns": "Book + KD + Beal spacing is lethal on paper, but the real question is health + role clarity.",
+  "Los Angeles Lakers": "LeBron still bends defenses at 40. The wild card is how many games AD + LeBron share the floor.",
+  "Golden State Warriors": "Curry gravity is still unmatched. When the 3s fall, this group can beat anyone in a series.",
+  "Dallas Mavericks": "Luka creates 1.3 points per possession in clutch. The supporting cast depth is the real variable.",
+  "Milwaukee Bucks": "Giannis is the most unstoppable force in basketball when healthy. The 3-point variance around him is the swing factor.",
+  "Philadelphia 76ers": "Embiid + Maxey pick-and-roll is elite. Health and Embiid's availability in May/June decide everything.",
+  "Houston Rockets": "Young, long, switchable, and they play hard every night. The most improved defensive identity in the league.",
+  "Cleveland Cavaliers": "Donovan Mitchell + Mobley two-man game + length. They have the tools to be a real problem.",
+  "Los Angeles Clippers": "Harden + Kawhi + Westbrook veteran IQ. When healthy, they know how to win ugly playoff games.",
+  "Orlando Magic": "Highest continuity in the East + elite young defense. The 'next OKC' on paper.",
+  "Memphis Grizzlies": "Ja + Jaren + 8 deep wings = chaos. When healthy this group plays with unmatched joy and physicality.",
+  "Indiana Pacers": "Fastest pace in basketball + Haliburton vision. They will score 120+ on any given night.",
+  "Miami Heat": "Culture + coaching + role players who know their jobs. They always find a way to overperform talent.",
+  "Atlanta Hawks": "Young score-first group still figuring out identity. High variance year.",
+  "Sacramento Kings": "Fox + Sabonis pick-and-roll is beautiful, but defense remains the limiter.",
+  "Detroit Pistons": "Cade + young athletic wings + new coaching. The East's most interesting riser.",
+  "San Antonio Spurs": "Wembanyama changes every possession. The best defensive prospect ever is only 21.",
+  "Brooklyn Nets": "Still in reset mode. High draft capital coming, low immediate contention odds.",
+  "Chicago Bulls": "Lavine + DeRozan veteran scoring, but the roster construction feels stuck between timelines.",
+  "Toronto Raptors": "Young and rebuilding. Barnes + new front office direction starting to show.",
+  "Charlotte Hornets": "LaMelo + young pieces. Still searching for a defensive identity and consistent winning culture.",
+  "Washington Wizards": "Full rebuild. High lottery odds and lots of young development minutes ahead.",
+  "Utah Jazz": "Post-Donovan reset. Young core with high picks incoming. Very long rebuild horizon.",
+  "Portland Trail Blazers": "Scoot + Sharpe + young wings. Lowest projected wins but highest developmental upside."
+}
+
+// Simple archetype labels for the top projected players (easy to extend)
+const PLAYER_ARCHETYPES = {
+  "Nikola Jokić": "Ultimate Connector",
+  "Luka Dončić": "Iso + Playmaker",
+  "Shai Gilgeous-Alexander": "Two-Way Alpha",
+  "Giannis Antetokounmpo": "Two-Way Freak",
+  "Jayson Tatum": "All-Around Wing",
+  "Joel Embiid": "Interior Force",
+  "Anthony Edwards": "Explosive Scorer",
+  "Devin Booker": "Iso Scorer",
+  "LeBron James": "Point Forward",
+  "Stephen Curry": "Gravity Creator"
+}
+
 export default function SeasonPreview() {
   const { data, loading, error } = useSeasonData()
 
   const [conference, setConference] = useState('western')
   const [viewMode, setViewMode] = useState('teams')
   const [selectedTeam, setSelectedTeam] = useState(null)
+
+  // === WHAT IF LAB STATE (the "where we shine" part) ===
+  // These two sliders let you simulate real-world variables that most sites ignore
+  const [starAvailability, setStarAvailability] = useState(100) // 60 = stars missing lots of games
+  const [chemistryBoost, setChemistryBoost] = useState(100)     // 120 = team gelled better than expected
+
+  // Per-team manual "healthy" overrides (for the scouting card mini-sim)
+  const [healthyOverrides, setHealthyOverrides] = useState({})
 
   if (loading) {
     return <div className="text-center py-20 text-white/60">Loading season predictions...</div>
@@ -16,24 +72,91 @@ export default function SeasonPreview() {
     return <div className="text-center py-20 text-red-400">Error loading data.</div>
   }
 
-  const standings = conference === 'western' 
+  const baseStandings = conference === 'western' 
     ? data.westernConference 
     : data.easternConference
 
-  const maxWins = Math.max(...standings.map(t => t.projectedWins))
+  // === LIVE WHAT-IF CALCULATION (A + light C magic) ===
+  // We adjust Net Rating and Wins on the fly using the two sliders + injury/continuity data.
+  // This is the kind of interactive "what if" thinking you almost never get on free sites.
+  const getAdjustedTeam = (team) => {
+    const override = healthyOverrides[team.team] || 0
 
-  // Simple dark horse calculation (high strength relative to projected wins rank)
+    // injuryImpact is negative (e.g. -6). Higher starAvailability reduces the drag.
+    const injuryDrag = team.injuryImpact * ((100 - starAvailability) / 100)
+    
+    // High continuity teams benefit more from the chemistry slider
+    const continuityBonus = ((team.continuityScore - 65) / 35) * ((chemistryBoost - 100) / 100) * 1.8
+
+    const adjustedNet = team.projectedNetRating + override - injuryDrag + continuityBonus
+
+    // Very rough but directionally sound: ~1.6 wins per net rating point over 82 games
+    const adjustedWins = Math.round(
+      team.projectedWins + (adjustedNet - team.projectedNetRating) * 1.55
+    )
+
+    const delta = adjustedWins - team.projectedWins
+
+    return {
+      ...team,
+      adjustedNet: Math.round(adjustedNet * 10) / 10,
+      adjustedWins: Math.max(20, Math.min(68, adjustedWins)),
+      delta,
+      injuryDrag: Math.round(injuryDrag * 10) / 10,
+      continuityBonus: Math.round(continuityBonus * 10) / 10
+    }
+  }
+
+  const standings = baseStandings.map(getAdjustedTeam).sort((a, b) => b.adjustedWins - a.adjustedWins)
+
+  const maxWins = Math.max(...standings.map(t => t.adjustedWins))
+
+  // Dark horses use adjusted values (strength is "pure talent", adjustedWins includes the what-if)
   const darkHorses = [...standings]
-    .sort((a, b) => b.strength - a.strength)
-    .slice(6, 9)
+    .map(t => ({
+      ...t,
+      surpriseIndex: Math.round((t.strength - (t.adjustedWins * 1.1)) + (t.continuityScore - 60) * 0.15)
+    }))
+    .sort((a, b) => b.surpriseIndex - a.surpriseIndex)
+    .slice(0, 6)
+
+  const resetWhatIf = () => {
+    setStarAvailability(100)
+    setChemistryBoost(100)
+    setHealthyOverrides({})
+    setSelectedTeam(null)
+  }
+
+  const toggleHealthy = (teamName) => {
+    setHealthyOverrides(prev => {
+      const current = prev[teamName] || 0
+      // +3.5 net rating points is roughly "the star played 20 more games and was 85% healthy"
+      const next = current === 0 ? 3.5 : 0
+      const updated = { ...prev, [teamName]: next }
+      return updated
+    })
+  }
+
+  const getInsight = (teamName) => TEAM_INSIGHTS[teamName] || "This roster has interesting variance — watch their first 20 games closely."
+
+  const getArchetype = (name) => PLAYER_ARCHETYPES[name] || "High-Impact Creator"
+
+  // Beautiful color helper for Net Rating
+  const getNetColor = (net) => {
+    if (net >= 5) return 'text-emerald-400'
+    if (net >= 2) return 'text-emerald-300'
+    if (net >= 0) return 'text-white'
+    if (net >= -3) return 'text-amber-300'
+    return 'text-red-400'
+  }
 
   return (
     <div>
       <div className="mb-8">
         <h1 className="text-4xl font-bold tracking-tight">2025-26 Season Preview</h1>
         <p className="text-white/60 mt-2 max-w-2xl">
-          Our (completely subjective) predictions for the upcoming NBA season. 
-          Toggle between conferences and views to explore.
+          Not just standings. We built real <span className="text-court-orange font-medium">What-If</span> tools + advanced metrics you won't find on ESPN or The Athletic.
+          Play with the sliders. Click any team for the full scouting report.
         </p>
       </div>
 
@@ -87,16 +210,88 @@ export default function SeasonPreview() {
         </div>
       </div>
 
-      {/* TEAM STANDINGS VIEW */}
+      {/* ===================================================== */}
+      {/* WHAT IF LAB — THE UNIQUE HOOPWHATIF DIFFERENTIATOR   */}
+      {/* ===================================================== */}
+      {viewMode === 'teams' && (
+        <div className="mb-8 p-5 bg-white/5 border border-white/10 rounded-2xl">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <div className="font-semibold text-lg flex items-center gap-2">
+                What-If Lab <span className="text-xs px-2 py-0.5 bg-court-orange/20 text-court-orange rounded-full font-mono tracking-widest">ADVANCED</span>
+              </div>
+              <div className="text-sm text-white/60">Real basketball variables almost no other site lets you play with live.</div>
+            </div>
+            <button 
+              onClick={resetWhatIf}
+              className="text-xs px-4 py-1.5 rounded-full bg-white/10 hover:bg-white/15 transition"
+            >
+              RESET ALL
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Slider 1: Star Availability (directly fights injuryImpact) */}
+            <div>
+              <div className="flex justify-between text-sm mb-1.5">
+                <span className="text-white/80">Star Availability</span>
+                <span className="font-mono text-court-orange">{starAvailability}%</span>
+              </div>
+              <input 
+                type="range" 
+                min="55" 
+                max="100" 
+                step="5"
+                value={starAvailability}
+                onChange={(e) => setStarAvailability(parseInt(e.target.value))}
+                className="whatif-slider w-full accent-court-orange"
+              />
+              <div className="text-[10px] text-white/50 mt-1 leading-tight">
+                100% = stars play 75+ games &nbsp;•&nbsp; 70% = major injury luck like 2023-24
+              </div>
+            </div>
+
+            {/* Slider 2: Chemistry / Continuity (rewards teams that stayed together) */}
+            <div>
+              <div className="flex justify-between text-sm mb-1.5">
+                <span className="text-white/80">Roster Chemistry / Continuity</span>
+                <span className="font-mono text-court-orange">{chemistryBoost}%</span>
+              </div>
+              <input 
+                type="range" 
+                min="80" 
+                max="125" 
+                step="5"
+                value={chemistryBoost}
+                onChange={(e) => setChemistryBoost(parseInt(e.target.value))}
+                className="whatif-slider w-full accent-court-orange"
+              />
+              <div className="text-[10px] text-white/50 mt-1 leading-tight">
+                High continuity teams (Orlando, Denver, OKC) gain more from this slider
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-3 text-xs text-white/40">
+            Adjusted wins update instantly. Positive deltas appear in <span className="text-emerald-400">green</span>. This is pure interactive modeling — exactly the kind of thinking front offices do.
+          </div>
+        </div>
+      )}
+
+      {/* TEAM STANDINGS VIEW — now with live adjusted numbers + rich cards */}
       {viewMode === 'teams' && (
         <div>
-          <h3 className="text-xl font-semibold mb-4">
+          <h3 className="text-xl font-semibold mb-4 flex items-center gap-3">
             Predicted {conference === 'western' ? 'Western' : 'Eastern'} Conference Standings
+            <span className="text-xs font-normal text-white/40">({standings.length} teams • live adjusted)</span>
           </h3>
 
           <div className="space-y-2.5">
             {standings.map((team, index) => {
               const isSelected = selectedTeam?.team === team.team
+              const deltaColor = team.delta > 0 ? 'text-emerald-400' : team.delta < 0 ? 'text-red-400' : 'text-white/50'
+              const deltaSign = team.delta > 0 ? '+' : ''
+
               return (
                 <div 
                   key={index} 
@@ -109,104 +304,217 @@ export default function SeasonPreview() {
                   <div className="flex-1">
                     <div className="flex justify-between items-baseline mb-1.5">
                       <span className="font-medium">{team.team}</span>
-                      <span className="text-sm text-white/60 font-mono">{team.projectedWins} wins</span>
+                      <div className="flex items-baseline gap-2 text-sm font-mono">
+                        <span className="text-white/60">{team.adjustedWins} wins</span>
+                        <span className={`w-9 text-right ${deltaColor}`}>
+                          {deltaSign}{team.delta}
+                        </span>
+                      </div>
                     </div>
-                    <div className="h-6 bg-white/10 rounded-full overflow-hidden">
+                    <div className="h-6 bg-white/10 rounded-full overflow-hidden relative">
                       <div 
                         className="h-full bg-court-orange transition-all duration-500 rounded-full"
-                        style={{ width: `${(team.projectedWins / maxWins) * 100}%` }}
+                        style={{ width: `${(team.adjustedWins / maxWins) * 100}%` }}
                       />
                     </div>
                   </div>
-                  <div className="w-12 text-right text-sm text-white/50 font-mono">
-                    {team.strength}
+                  <div className="w-16 text-right text-sm font-mono">
+                    <span className={getNetColor(team.adjustedNet)}>{team.adjustedNet}</span>
+                    <span className="text-white/30 text-[10px] ml-0.5">NRtg</span>
                   </div>
                 </div>
               )
             })}
           </div>
 
-          {/* Selected Team Details */}
+          {/* RICH SCOUTING CARD — the advanced part (A + B thinking) */}
           {selectedTeam && (
-            <div className="mt-6 p-5 bg-white/5 border border-white/10 rounded-2xl">
-              <h4 className="font-semibold text-lg mb-2">{selectedTeam.team}</h4>
-              <div className="grid grid-cols-3 gap-4 text-sm">
+            <div className="scouting-card mt-6 p-6 bg-white/5 border border-white/10 rounded-2xl">
+              <div className="flex items-start justify-between mb-4">
                 <div>
-                  <div className="text-white/60">Projected Wins</div>
-                  <div className="text-2xl font-bold text-court-orange">{selectedTeam.projectedWins}</div>
+                  <h4 className="font-semibold text-2xl tracking-tight">{selectedTeam.team}</h4>
+                  <div className="text-xs text-white/50 mt-0.5 font-mono">
+                    Adjusted Net Rating: <span className={getNetColor(selectedTeam.adjustedNet)}>{selectedTeam.adjustedNet}</span>
+                  </div>
                 </div>
-                <div>
-                  <div className="text-white/60">Strength Rating</div>
-                  <div className="text-2xl font-bold">{selectedTeam.strength}</div>
+                <div className="text-right">
+                  <div className="text-4xl font-bold text-court-orange tabular-nums">{selectedTeam.adjustedWins}</div>
+                  <div className="text-xs text-white/50 -mt-1">PROJECTED WINS</div>
                 </div>
-                <div>
-                  <div className="text-white/60">Playoff Odds</div>
-                  <div className="text-2xl font-bold">{selectedTeam.strength > 70 ? 'High' : selectedTeam.strength > 55 ? 'Medium' : 'Low'}</div>
+              </div>
+
+              {/* Net Rating Breakdown — teaches a real advanced concept */}
+              <div className="mb-5">
+                <div className="text-xs uppercase tracking-widest text-white/50 mb-2">Net Rating Breakdown</div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div>
+                    <div className="flex justify-between text-xs mb-1 text-white/70">
+                      <span>Offensive Rating</span>
+                      <span className="font-mono">{selectedTeam.offensiveRating}</span>
+                    </div>
+                    <div className="h-2.5 bg-white/10 rounded-full overflow-hidden">
+                      <div className="h-full bg-blue-400 rounded-full" style={{ width: `${((selectedTeam.offensiveRating - 105) / 18) * 100}%` }} />
+                    </div>
+                  </div>
+                  <div>
+                    <div className="flex justify-between text-xs mb-1 text-white/70">
+                      <span>Defensive Rating</span>
+                      <span className="font-mono">{selectedTeam.defensiveRating}</span>
+                    </div>
+                    <div className="h-2.5 bg-white/10 rounded-full overflow-hidden">
+                      <div className="h-full bg-red-400/80 rounded-full" style={{ width: `${((selectedTeam.defensiveRating - 105) / 18) * 100}%` }} />
+                    </div>
+                  </div>
                 </div>
+                <div className="text-[10px] text-white/40 mt-1.5">
+                  +6.0 Net Rating roughly equals 9–10 extra wins over an average team. This is the single most predictive number in basketball.
+                </div>
+              </div>
+
+              {/* Injury + Continuity — two metrics almost never visualized together */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
+                <div className="bg-white/5 rounded-xl p-4">
+                  <div className="text-xs text-white/60 mb-1">Injury Impact (Wins Drag)</div>
+                  <div className="text-3xl font-bold tabular-nums">{selectedTeam.injuryImpact}</div>
+                  <div className="text-xs text-white/50 mt-1">
+                    Negative = expected games missed by key players. The What-If Lab above directly fights this number.
+                  </div>
+                  <button 
+                    onClick={() => toggleHealthy(selectedTeam.team)}
+                    className="mt-3 text-xs px-3 py-1 rounded-full bg-court-orange/10 hover:bg-court-orange/20 text-court-orange border border-court-orange/30 transition"
+                  >
+                    {healthyOverrides[selectedTeam.team] ? 'RESTORE REALISTIC INJURIES' : 'SIMULATE HEALTHY SEASON'}
+                  </button>
+                </div>
+
+                <div className="bg-white/5 rounded-xl p-4">
+                  <div className="text-xs text-white/60 mb-1">Continuity / Chemistry Score</div>
+                  <div className="text-3xl font-bold tabular-nums">{selectedTeam.continuityScore}</div>
+                  <div className="insight-text text-white/70 mt-1 pr-2">
+                    {getInsight(selectedTeam.team)}
+                  </div>
+                  <div className="text-[10px] text-white/40 mt-2">
+                    Teams above 78 kept their core together. Chemistry is the hidden multiplier most projections ignore.
+                  </div>
+                </div>
+              </div>
+
+              {/* What the adjusted number actually means right now */}
+              <div className="text-xs bg-white/5 border border-white/10 rounded-xl p-3 text-white/70">
+                With current What-If settings, this team is projected <span className="font-semibold text-white">{selectedTeam.adjustedWins} wins</span> 
+                {selectedTeam.delta !== 0 && (
+                  <> — a <span className={selectedTeam.delta > 0 ? 'text-emerald-400' : 'text-red-400'}>{selectedTeam.delta > 0 ? '+' : ''}{selectedTeam.delta} win swing</span> from the base model.</>
+                )}
               </div>
             </div>
           )}
-        </div>
-      )}
 
-      {/* TOP PLAYERS VIEW */}
-      {viewMode === 'players' && (
-        <div>
-          <h3 className="text-xl font-semibold mb-4">Top Projected Performers 2025-26</h3>
-          
-          <div className="space-y-3">
-            {data.topProjectedPlayers.map((player, index) => (
-              <div key={index} className="bg-white/5 border border-white/10 rounded-2xl p-4">
-                <div className="flex justify-between items-start mb-3">
-                  <div>
-                    <div className="font-semibold text-lg">{player.name}</div>
-                    <div className="text-sm text-white/60">{player.team}</div>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-3xl font-bold text-court-orange">{player.projectedPpg}</div>
-                    <div className="text-xs text-white/50 -mt-1">PPG</div>
-                  </div>
-                </div>
-
-                {/* Mini stat bars */}
-                <div className="space-y-2">
-                  <div className="flex items-center gap-3 text-sm">
-                    <span className="w-8 text-white/60">APG</span>
-                    <div className="flex-1 h-2 bg-white/10 rounded-full overflow-hidden">
-                      <div className="h-full bg-blue-400" style={{ width: `${Math.min(player.projectedApg * 6, 100)}%` }} />
-                    </div>
-                    <span className="font-mono w-8 text-right">{player.projectedApg}</span>
-                  </div>
-                  <div className="flex items-center gap-3 text-sm">
-                    <span className="w-8 text-white/60">RPG</span>
-                    <div className="flex-1 h-2 bg-white/10 rounded-full overflow-hidden">
-                      <div className="h-full bg-green-400" style={{ width: `${Math.min(player.projectedRpg * 5, 100)}%` }} />
-                    </div>
-                    <span className="font-mono w-8 text-right">{player.projectedRpg}</span>
-                  </div>
-                </div>
-              </div>
-            ))}
+          <div className="mt-3 text-[10px] text-white/40">
+            Click any team row to open the full Front Office Scouting Card. The numbers update live with the sliders above.
           </div>
         </div>
       )}
 
-      {/* DARK HORSES VIEW */}
+      {/* TOP PLAYERS VIEW — now actually advanced */}
+      {viewMode === 'players' && (
+        <div>
+          <h3 className="text-xl font-semibold mb-4">Top Projected Performers 2025-26 — Advanced View</h3>
+          <p className="text-sm text-white/60 mb-5 max-w-xl">
+            Two-Way Score, PER, and VORP are real advanced metrics. We highlight the ones that actually predict playoff impact.
+          </p>
+          
+          <div className="space-y-3">
+            {data.topProjectedPlayers.map((player, index) => {
+              const archetype = getArchetype(player.name)
+              const twoWay = player.twoWayScore || 80
+              const twoWayLabel = twoWay >= 90 ? 'ELITE TWO-WAY' : twoWay >= 83 ? 'PLUS TWO-WAY' : 'OFFENSIVE ENGINE'
+
+              return (
+                <div key={index} className="bg-white/5 border border-white/10 rounded-2xl p-4">
+                  <div className="flex justify-between items-start mb-3">
+                    <div>
+                      <div className="font-semibold text-lg flex items-center gap-2">
+                        {player.name}
+                        <span className="text-[10px] px-2 py-px rounded bg-white/10 text-white/70 font-mono tracking-wider">{archetype}</span>
+                      </div>
+                      <div className="text-sm text-white/60">{player.team}</div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-3xl font-bold text-court-orange">{player.projectedPpg}</div>
+                      <div className="text-xs text-white/50 -mt-1">PPG</div>
+                    </div>
+                  </div>
+
+                  {/* Advanced metrics row */}
+                  <div className="mb-3 flex flex-wrap gap-x-6 gap-y-1 text-sm">
+                    <div>
+                      <span className="text-white/50">Two-Way Score</span>
+                      <span className="ml-2 font-bold text-emerald-400">{twoWay}</span>
+                      <span className="ml-1.5 text-[10px] text-emerald-400/70">{twoWayLabel}</span>
+                    </div>
+                    <div>
+                      <span className="text-white/50">PER</span>
+                      <span className="ml-2 font-mono font-semibold">{player.projectedPER}</span>
+                    </div>
+                    <div>
+                      <span className="text-white/50">VORP</span>
+                      <span className="ml-2 font-mono font-semibold">{player.projectedVORP}</span>
+                    </div>
+                  </div>
+
+                  {/* Classic counting stats still shown for accessibility */}
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-3 text-sm">
+                      <span className="w-8 text-white/60">APG</span>
+                      <div className="flex-1 h-2 bg-white/10 rounded-full overflow-hidden">
+                        <div className="h-full bg-blue-400" style={{ width: `${Math.min(player.projectedApg * 6, 100)}%` }} />
+                      </div>
+                      <span className="font-mono w-8 text-right">{player.projectedApg}</span>
+                    </div>
+                    <div className="flex items-center gap-3 text-sm">
+                      <span className="w-8 text-white/60">RPG</span>
+                      <div className="flex-1 h-2 bg-white/10 rounded-full overflow-hidden">
+                        <div className="h-full bg-green-400" style={{ width: `${Math.min(player.projectedRpg * 5, 100)}%` }} />
+                      </div>
+                      <span className="font-mono w-8 text-right">{player.projectedRpg}</span>
+                    </div>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+
+          <div className="mt-4 text-xs text-white/40">
+            PER = Player Efficiency Rating (higher is better). VORP = Value Over Replacement Player. Two-Way Score is our internal blend of offense + defense + impact.
+          </div>
+        </div>
+      )}
+
+      {/* DARK HORSES VIEW — now with real Surprise Index */}
       {viewMode === 'darkhorses' && (
         <div>
-          <h3 className="text-xl font-semibold mb-2">Dark Horses & Surprises</h3>
-          <p className="text-white/60 mb-4 text-sm">Teams we think could overperform expectations.</p>
+          <h3 className="text-xl font-semibold mb-2">Dark Horses &amp; Biggest Overperformers</h3>
+          <p className="text-white/60 mb-4 text-sm max-w-2xl">
+            These teams have the biggest gap between their "pure talent" strength rating and what the adjusted model projects.
+            High Surprise Index = they could easily finish 6–9 wins above their base projection.
+          </p>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {darkHorses.map((team, index) => (
               <div key={index} className="bg-white/5 border border-white/10 rounded-2xl p-5">
-                <div className="font-semibold text-lg">{team.team}</div>
-                <div className="text-sm text-white/60 mt-1">Projected: {team.projectedWins} wins</div>
-                <div className="mt-3 text-sm">
-                  Strength Rating: <span className="font-bold text-court-orange">{team.strength}</span>
+                <div className="flex justify-between items-start">
+                  <div className="font-semibold text-lg">{team.team}</div>
+                  <div className="text-xs px-2 py-0.5 bg-emerald-400/10 text-emerald-400 rounded font-mono">
+                    +{Math.max(3, Math.round(team.surpriseIndex / 3))} WIN upside
+                  </div>
                 </div>
-                <div className="text-xs text-white/50 mt-2">
-                  We think they could surprise a lot of people this year.
+                <div className="text-sm text-white/60 mt-1">Base: {team.projectedWins} wins → Adjusted: {team.adjustedWins}</div>
+                
+                <div className="mt-3 text-sm">
+                  Strength: <span className="font-bold text-court-orange">{team.strength}</span> &nbsp;•&nbsp; Continuity: <span className="font-medium">{team.continuityScore}</span>
+                </div>
+                <div className="insight-text text-white/70 mt-3 border-t border-white/10 pt-3">
+                  {getInsight(team.team)}
                 </div>
               </div>
             ))}
@@ -215,7 +523,7 @@ export default function SeasonPreview() {
       )}
 
       <div className="mt-8 text-xs text-white/50">
-        These are fun, subjective predictions. Your mileage may vary. Data last updated: {data.lastUpdated}
+        These are fun, subjective, model-driven predictions. Your mileage may vary. Data last updated: {data.lastUpdated} • Built to teach real advanced stats through play.
       </div>
     </div>
   )

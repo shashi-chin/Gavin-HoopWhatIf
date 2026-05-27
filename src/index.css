@@ -61,3 +61,37 @@ body {
 .result-win {
   background: linear-gradient(90deg, rgba(241, 90, 36, 0.15), transparent);
 }
+
+/* Season Preview advanced visuals */
+.net-rating-bar {
+  transition: width 400ms cubic-bezier(0.23, 1.0, 0.32, 1);
+}
+
+.scouting-card {
+  animation: slideUp 0.25s ease-out forwards;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.metric-pill {
+  font-size: 10px;
+  letter-spacing: 0.5px;
+}
+
+.whatif-slider {
+  accent-color: #f15a24;
+}
+
+.insight-text {
+  font-size: 0.8125rem;
+  line-height: 1.35;
+}
