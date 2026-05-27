@@ -123,7 +123,7 @@ export default function SeasonPreview() {
 
   const [conference, setConference] = useState('western')
   const [viewMode, setViewMode] = useState('teams')
-  const [selectedTeam, setSelectedTeam] = useState(null)
+  const [selectedTeamName, setSelectedTeamName] = useState(null)
 
   // === WHAT IF LAB STATE (the "where we shine" part) ===
   // These sliders let you simulate real-world variables that most sites ignore
@@ -209,6 +209,11 @@ export default function SeasonPreview() {
 
   const maxWins = Math.max(...standings.map(t => t.adjustedWins))
 
+  // Derive the currently selected team from the *live* standings so sliders always affect the card
+  const currentSelectedTeam = selectedTeamName 
+    ? standings.find(t => t.team === selectedTeamName) 
+    : null
+
   // Dark horses use adjusted values (strength is "pure talent", adjustedWins includes the what-if)
   const darkHorses = [...standings]
     .map(t => ({
@@ -223,7 +228,7 @@ export default function SeasonPreview() {
     setChemistryBoost(100)
     setInjuryRegression(0)
     setHealthyOverrides({})
-    setSelectedTeam(null)
+    setSelectedTeamName(null)
   }
 
   const toggleHealthy = (teamName) => {
@@ -276,13 +281,13 @@ export default function SeasonPreview() {
       <div className="flex flex-wrap gap-4 mb-6">
         <div className="flex bg-white/5 rounded-full p-1">
           <button
-            onClick={() => { setConference('western'); setSelectedTeam(null); }}
+            onClick={() => { setConference('western'); setSelectedTeamName(null); }}
             className={`px-5 py-2 rounded-full text-sm transition ${conference === 'western' ? 'bg-white/10 font-medium' : 'hover:bg-white/5'}`}
           >
             Western
           </button>
           <button
-            onClick={() => { setConference('eastern'); setSelectedTeam(null); }}
+            onClick={() => { setConference('eastern'); setSelectedTeamName(null); }}
             className={`px-5 py-2 rounded-full text-sm transition ${conference === 'eastern' ? 'bg-white/10 font-medium' : 'hover:bg-white/5'}`}
           >
             Eastern
@@ -291,7 +296,7 @@ export default function SeasonPreview() {
 
         <div className="flex bg-white/5 rounded-full p-1">
           <button
-            onClick={() => { setViewMode('teams'); setSelectedTeam(null); }}
+            onClick={() => { setViewMode('teams'); setSelectedTeamName(null); }}
             className={`px-5 py-2 rounded-full text-sm transition ${viewMode === 'teams' ? 'bg-white/10 font-medium' : 'hover:bg-white/5'}`}
           >
             Team Standings
@@ -409,14 +414,14 @@ export default function SeasonPreview() {
 
           <div className="space-y-2.5">
             {standings.map((team, index) => {
-              const isSelected = selectedTeam?.team === team.team
+              const isSelected = selectedTeamName === team.team
               const deltaColor = team.delta > 0 ? 'text-emerald-400' : team.delta < 0 ? 'text-red-400' : 'text-white/50'
               const deltaSign = team.delta > 0 ? '+' : ''
 
               return (
                 <div 
                   key={index} 
-                  onClick={() => setSelectedTeam(isSelected ? null : team)}
+                  onClick={() => setSelectedTeamName(isSelected ? null : team.team)}
                   className={`flex items-center gap-4 group cursor-pointer p-2 -mx-2 rounded-xl transition ${isSelected ? 'bg-white/5' : 'hover:bg-white/5'}`}
                 >
                   <div className="w-8 text-right text-sm text-white/50 font-mono">
@@ -449,17 +454,17 @@ export default function SeasonPreview() {
           </div>
 
           {/* RICH SCOUTING CARD — the advanced part (A + B thinking) */}
-          {selectedTeam && (
+          {currentSelectedTeam && (
             <div className="scouting-card mt-6 p-6 bg-white/5 border border-white/10 rounded-2xl">
               <div className="flex items-start justify-between mb-4">
                 <div>
-                  <h4 className="font-semibold text-2xl tracking-tight">{selectedTeam.team}</h4>
+                  <h4 className="font-semibold text-2xl tracking-tight">{currentSelectedTeam.team}</h4>
                   <div className="text-xs text-white/50 mt-0.5 font-mono">
-                    Adjusted Net Rating: <span className={getNetColor(selectedTeam.adjustedNet)}>{selectedTeam.adjustedNet}</span>
+                    Adjusted Net Rating: <span className={getNetColor(currentSelectedTeam.adjustedNet)}>{currentSelectedTeam.adjustedNet}</span>
                   </div>
                 </div>
                 <div className="text-right">
-                  <div className="text-4xl font-bold text-court-orange tabular-nums">{selectedTeam.adjustedWins}</div>
+                  <div className="text-4xl font-bold text-court-orange tabular-nums">{currentSelectedTeam.adjustedWins}</div>
                   <div className="text-xs text-white/50 -mt-1">PROJECTED WINS</div>
                 </div>
               </div>
@@ -471,19 +476,19 @@ export default function SeasonPreview() {
                   <div>
                     <div className="flex justify-between text-xs mb-1 text-white/70">
                       <span>Offensive Rating</span>
-                      <span className="font-mono">{selectedTeam.offensiveRating}</span>
+                      <span className="font-mono">{currentSelectedTeam.offensiveRating}</span>
                     </div>
                     <div className="h-2.5 bg-white/10 rounded-full overflow-hidden">
-                      <div className="h-full bg-blue-400 rounded-full" style={{ width: `${((selectedTeam.offensiveRating - 105) / 18) * 100}%` }} />
+                      <div className="h-full bg-blue-400 rounded-full" style={{ width: `${((currentSelectedTeam.offensiveRating - 105) / 18) * 100}%` }} />
                     </div>
                   </div>
                   <div>
                     <div className="flex justify-between text-xs mb-1 text-white/70">
                       <span>Defensive Rating</span>
-                      <span className="font-mono">{selectedTeam.defensiveRating}</span>
+                      <span className="font-mono">{currentSelectedTeam.defensiveRating}</span>
                     </div>
                     <div className="h-2.5 bg-white/10 rounded-full overflow-hidden">
-                      <div className="h-full bg-red-400/80 rounded-full" style={{ width: `${((selectedTeam.defensiveRating - 105) / 18) * 100}%` }} />
+                      <div className="h-full bg-red-400/80 rounded-full" style={{ width: `${((currentSelectedTeam.defensiveRating - 105) / 18) * 100}%` }} />
                     </div>
                   </div>
                 </div>
@@ -496,23 +501,23 @@ export default function SeasonPreview() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
                 <div className="bg-white/5 rounded-xl p-4">
                   <div className="text-xs text-white/60 mb-1">Injury Impact (Wins Drag)</div>
-                  <div className="text-3xl font-bold tabular-nums">{selectedTeam.injuryImpact}</div>
+                  <div className="text-3xl font-bold tabular-nums">{currentSelectedTeam.injuryImpact}</div>
                   <div className="text-xs text-white/50 mt-1">
                     Negative = expected games missed by key players. The What-If Lab above directly fights this number.
                   </div>
                   <button 
-                    onClick={() => toggleHealthy(selectedTeam.team)}
+                    onClick={() => toggleHealthy(currentSelectedTeam.team)}
                     className="mt-3 text-xs px-3 py-1 rounded-full bg-court-orange/10 hover:bg-court-orange/20 text-court-orange border border-court-orange/30 transition"
                   >
-                    {healthyOverrides[selectedTeam.team] ? 'RESTORE REALISTIC INJURIES' : 'SIMULATE HEALTHY SEASON'}
+                    {healthyOverrides[currentSelectedTeam.team] ? 'RESTORE REALISTIC INJURIES' : 'SIMULATE HEALTHY SEASON'}
                   </button>
                 </div>
 
                 <div className="bg-white/5 rounded-xl p-4">
                   <div className="text-xs text-white/60 mb-1">Continuity / Chemistry Score</div>
-                  <div className="text-3xl font-bold tabular-nums">{selectedTeam.continuityScore}</div>
+                  <div className="text-3xl font-bold tabular-nums">{currentSelectedTeam.continuityScore}</div>
                   <div className="insight-text text-white/70 mt-1 pr-2">
-                    {getInsight(selectedTeam.team)}
+                    {getInsight(currentSelectedTeam.team)}
                   </div>
                   <div className="text-[10px] text-white/40 mt-2">
                     Teams above 78 kept their core together. Chemistry is the hidden multiplier most projections ignore.
@@ -531,7 +536,7 @@ export default function SeasonPreview() {
                   {/* Versatility Index — real modern NBA concept */}
                   <div className="bg-white/5 rounded-xl p-4">
                     <div className="text-xs text-white/60 mb-1">Versatility Index</div>
-                    <div className="text-3xl font-bold tabular-nums text-emerald-300">{selectedTeam.versatility || getVersatilityIndex(selectedTeam)}</div>
+                    <div className="text-3xl font-bold tabular-nums text-emerald-300">{currentSelectedTeam.versatility || getVersatilityIndex(currentSelectedTeam)}</div>
                     <div className="text-[10px] text-white/50 mt-1 leading-tight">
                       How well can this team adapt schemes, switch matchups, and play different styles? Higher = more dangerous in playoffs.
                     </div>
@@ -540,8 +545,8 @@ export default function SeasonPreview() {
                   {/* Playoff DNA — historical over/under performance factor */}
                   <div className="bg-white/5 rounded-xl p-4">
                     <div className="text-xs text-white/60 mb-1">Playoff DNA Adjustment</div>
-                    <div className={`text-3xl font-bold tabular-nums ${selectedTeam.playoffDNA > 0 ? 'text-emerald-400' : 'text-amber-300'}`}>
-                      {selectedTeam.playoffDNA > 0 ? '+' : ''}{selectedTeam.playoffDNA}
+                    <div className={`text-3xl font-bold tabular-nums ${currentSelectedTeam.playoffDNA > 0 ? 'text-emerald-400' : 'text-amber-300'}`}>
+                      {currentSelectedTeam.playoffDNA > 0 ? '+' : ''}{currentSelectedTeam.playoffDNA}
                     </div>
                     <div className="text-[10px] text-white/50 mt-1 leading-tight">
                       How much this group tends to over- or under-perform its regular-season numbers in best-of-7 series. Culture + experience effect.
@@ -552,7 +557,7 @@ export default function SeasonPreview() {
                   <div className="bg-white/5 rounded-xl p-4 md:col-span-1">
                     <div className="text-xs text-white/60 mb-1">Kryptonite (Hidden Weakness)</div>
                     <div className="insight-text text-white/80 leading-snug">
-                      {getKryptonite(selectedTeam.team)}
+                      {getKryptonite(currentSelectedTeam.team)}
                     </div>
                   </div>
                 </div>
@@ -561,16 +566,16 @@ export default function SeasonPreview() {
                 <div className="mt-4 bg-white/5 border border-white/10 rounded-xl p-4">
                   <div className="text-xs uppercase tracking-widest text-white/50 mb-1.5">Internal Model Note</div>
                   <div className="text-sm text-white/80 leading-relaxed">
-                    {getHiddenNote(selectedTeam.team)}
+                    {getHiddenNote(currentSelectedTeam.team)}
                   </div>
                 </div>
               </div>
 
               {/* What the adjusted number actually means right now */}
               <div className="mt-5 text-xs bg-white/5 border border-white/10 rounded-xl p-3 text-white/70">
-                With current What-If settings, this team is projected <span className="font-semibold text-white">{selectedTeam.adjustedWins} wins</span> 
-                {selectedTeam.delta !== 0 && (
-                  <> — a <span className={selectedTeam.delta > 0 ? 'text-emerald-400' : 'text-red-400'}>{selectedTeam.delta > 0 ? '+' : ''}{selectedTeam.delta} win swing</span> from the base model.</>
+                With current What-If settings, this team is projected <span className="font-semibold text-white">{currentSelectedTeam.adjustedWins} wins</span> 
+                {currentSelectedTeam.delta !== 0 && (
+                  <> — a <span className={currentSelectedTeam.delta > 0 ? 'text-emerald-400' : 'text-red-400'}>{currentSelectedTeam.delta > 0 ? '+' : ''}{currentSelectedTeam.delta} win swing</span> from the base model.</>
                 )}
               </div>
             </div>
