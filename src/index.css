@@ -46,6 +46,12 @@ body {
   }
 }
 
+/* Simple realistic animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 /* Era slider styling */
 .era-slider {
   accent-color: #f15a24;

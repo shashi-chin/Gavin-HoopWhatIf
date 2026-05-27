@@ -12,6 +12,7 @@ export default function DreamTeam({ players }) {
 
   // Battle result
   const [battleResult, setBattleResult] = useState(null)
+  const [isBattling, setIsBattling] = useState(false)
 
   // Search
   const [searchTerm, setSearchTerm] = useState('')
@@ -94,7 +95,7 @@ export default function DreamTeam({ players }) {
     }
   }
 
-  // Battle against a random team
+  // Battle against a random team (with animation)
   const battle = () => {
     if (currentTeam.length === 0) return
 
@@ -117,7 +118,15 @@ export default function DreamTeam({ players }) {
       margin: Math.abs(yourScore - opponentScore)
     }
 
-    setBattleResult(result)
+    // Start battle animation sequence
+    setIsBattling(true)
+    setBattleResult(null)
+
+    // After a short dramatic pause, show the result
+    setTimeout(() => {
+      setIsBattling(false)
+      setBattleResult(result)
+    }, 1650) // ~1.65 seconds of "animation"
   }
 
   return (
@@ -143,10 +152,17 @@ export default function DreamTeam({ players }) {
             </button>
             <button
               onClick={battle}
-              disabled={currentTeam.length === 0}
-              className="px-4 py-2 text-sm rounded-full bg-court-orange text-black font-medium disabled:opacity-40"
+              disabled={currentTeam.length === 0 || isBattling}
+              className="px-4 py-2 text-sm rounded-full bg-court-orange text-black font-medium disabled:opacity-40 flex items-center gap-2"
             >
-              Battle Random Team
+              {isBattling ? (
+                <>
+                  <span className="animate-spin inline-block w-3.5 h-3.5 border-2 border-black border-t-transparent rounded-full"></span>
+                  Battling...
+                </>
+              ) : (
+                "Battle Random Team"
+              )}
             </button>
           </div>
         </div>
@@ -267,57 +283,113 @@ export default function DreamTeam({ players }) {
         </div>
       </div>
 
-      {/* Battle Result Modal */}
-      {battleResult && (
-        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4" onClick={() => setBattleResult(null)}>
+      {/* Animated Battle Result Modal */}
+      {(battleResult || isBattling) && (
+        <div 
+          className="fixed inset-0 bg-black/85 flex items-center justify-center z-50 p-4" 
+          onClick={() => {
+            setBattleResult(null)
+            setIsBattling(false)
+          }}
+        >
           <div
-            className="bg-deep-navy border border-white/10 rounded-3xl max-w-4xl w-full p-6"
+            className="bg-deep-navy border border-white/10 rounded-3xl max-w-5xl w-full p-6 md:p-8"
             onClick={e => e.stopPropagation()}
           >
-            <h2 className="text-2xl font-bold mb-6 text-center">Dream Team Battle</h2>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6">
-              {/* Your Team */}
-              <div>
-                <div className="text-center mb-4">
-                  <div className="text-xl font-semibold">Your Team</div>
-                  <div className="text-5xl font-bold text-court-orange mt-1">{battleResult.yourScore}</div>
-                </div>
-                <div className="space-y-2">
-                  {battleResult.yourTeam.map((p, i) => (
-                    <div key={i} className="bg-white/5 rounded-xl p-3 text-sm">
-                      {p.name} <span className="text-white/50">({p.era})</span>
+            {/* During Animation */}
+            {isBattling && (
+              <div className="flex flex-col items-center justify-center py-12">
+                <div className="text-6xl mb-6 animate-bounce">🏀</div>
+                <div className="text-3xl font-semibold tracking-wide">Tip-off...</div>
+                <div className="text-white/60 mt-2">Teams taking the court</div>
+                
+                <div className="flex gap-8 mt-10">
+                  <div className="text-center">
+                    <div className="text-sm text-white/60 mb-2">Your Team</div>
+                    <div className="flex -space-x-3">
+                      {currentTeam.slice(0, 3).map((_, i) => (
+                        <div key={i} className="w-10 h-10 bg-court-orange/70 rounded-full border-2 border-deep-navy" />
+                      ))}
                     </div>
-                  ))}
+                  </div>
+                  <div className="text-center">
+                    <div className="text-sm text-white/60 mb-2">Opponents</div>
+                    <div className="flex -space-x-3">
+                      {[1,2,3].map((_, i) => (
+                        <div key={i} className="w-10 h-10 bg-white/30 rounded-full border-2 border-deep-navy" />
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </div>
+            )}
 
-              {/* Opponent Team */}
-              <div>
-                <div className="text-center mb-4">
-                  <div className="text-xl font-semibold">Opponents</div>
-                  <div className="text-5xl font-bold text-white/70 mt-1">{battleResult.opponentScore}</div>
-                </div>
-                <div className="space-y-2">
-                  {battleResult.opponentTeam.map((p, i) => (
-                    <div key={i} className="bg-white/5 rounded-xl p-3 text-sm">
-                      {p.name} <span className="text-white/50">({p.era})</span>
+            {/* Final Result */}
+            {battleResult && !isBattling && (
+              <>
+                <h2 className="text-2xl font-bold mb-6 text-center tracking-tight">Dream Team Battle</h2>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mb-8">
+                  {/* Your Team */}
+                  <div className="animate-[fadeIn_0.4s_ease]">
+                    <div className="text-center mb-3">
+                      <div className="uppercase text-xs tracking-[2px] text-white/50">Your Team</div>
+                      <div className="text-6xl font-bold text-court-orange tabular-nums mt-1 transition-all">
+                        {battleResult.yourScore}
+                      </div>
                     </div>
-                  ))}
+                    <div className="space-y-2">
+                      {battleResult.yourTeam.map((p, i) => (
+                        <div 
+                          key={i} 
+                          className="bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-sm flex justify-between items-center"
+                        >
+                          <span>{p.name}</span>
+                          <span className="text-white/50 text-xs">{p.era}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Opponent Team */}
+                  <div className="animate-[fadeIn_0.6s_ease]">
+                    <div className="text-center mb-3">
+                      <div className="uppercase text-xs tracking-[2px] text-white/50">Opponents</div>
+                      <div className="text-6xl font-bold text-white/80 tabular-nums mt-1">
+                        {battleResult.opponentScore}
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      {battleResult.opponentTeam.map((p, i) => (
+                        <div 
+                          key={i} 
+                          className="bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-sm flex justify-between items-center"
+                        >
+                          <span>{p.name}</span>
+                          <span className="text-white/50 text-xs">{p.era}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
 
-            <div className="text-center text-xl mb-6">
-              <span className="font-semibold text-court-orange">{battleResult.winner}</span> won by {battleResult.margin} points!
-            </div>
+                {/* Winner Banner */}
+                <div className="bg-white/5 border border-white/10 rounded-2xl p-5 text-center mb-6">
+                  <div className="text-sm text-white/60">Final Result</div>
+                  <div className="text-3xl font-semibold mt-1">
+                    <span className="text-court-orange">{battleResult.winner}</span> won by{" "}
+                    <span className="font-mono">{battleResult.margin}</span> points
+                  </div>
+                </div>
 
-            <button
-              onClick={() => setBattleResult(null)}
-              className="w-full py-3 rounded-2xl bg-white/10 hover:bg-white/20 transition"
-            >
-              Close
-            </button>
+                <button
+                  onClick={() => setBattleResult(null)}
+                  className="w-full py-3.5 rounded-2xl bg-white/10 hover:bg-white/15 active:bg-white/20 transition font-medium"
+                >
+                  Close
+                </button>
+              </>
+            )}
           </div>
         </div>
       )}

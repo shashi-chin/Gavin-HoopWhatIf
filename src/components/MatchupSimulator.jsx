@@ -14,11 +14,20 @@ export default function MatchupSimulator() {
   const [player2, setPlayer2] = useState(null)
   const [sliders, setSliders] = useState(defaultSliders)
   const [result, setResult] = useState(null)
+  const [isSimulating, setIsSimulating] = useState(false)
 
   const runSimulation = () => {
     if (!player1 || !player2) return
-    const simResult = simulateMatchup(player1, player2, sliders)
-    setResult(simResult)
+
+    setIsSimulating(true)
+    setResult(null)
+
+    // Add a realistic "computing" delay
+    setTimeout(() => {
+      const simResult = simulateMatchup(player1, player2, sliders)
+      setResult(simResult)
+      setIsSimulating(false)
+    }, 1250) // 1.25 seconds feels realistic
   }
 
   const reset = () => {
@@ -84,10 +93,17 @@ export default function MatchupSimulator() {
       <div className="flex gap-3 mt-6">
         <button
           onClick={runSimulation}
-          disabled={!player1 || !player2}
-          className="flex-1 py-3.5 rounded-2xl bg-court-orange text-black font-semibold text-lg disabled:opacity-40 disabled:cursor-not-allowed active:scale-[0.985] transition"
+          disabled={!player1 || !player2 || isSimulating}
+          className="flex-1 py-3.5 rounded-2xl bg-court-orange text-black font-semibold text-lg disabled:opacity-40 disabled:cursor-not-allowed active:scale-[0.985] transition flex items-center justify-center gap-2"
         >
-          Simulate Matchup
+          {isSimulating ? (
+            <>
+              <span className="animate-spin inline-block w-4 h-4 border-2 border-black border-t-transparent rounded-full"></span>
+              Simulating...
+            </>
+          ) : (
+            "Simulate Matchup"
+          )}
         </button>
         <button
           onClick={reset}
@@ -98,8 +114,8 @@ export default function MatchupSimulator() {
       </div>
 
       {/* Result Panel */}
-      {result && (
-        <div className="mt-8 bg-white/5 border border-white/10 rounded-3xl p-6">
+      {result && !isSimulating && (
+        <div className="mt-8 bg-white/5 border border-white/10 rounded-3xl p-6 animate-[fadeIn_0.4s_ease]">
           <div className="text-center mb-6">
             <div className="uppercase text-xs tracking-[3px] text-white/50 mb-1">Simulation Result</div>
             <div className="text-3xl font-bold">
