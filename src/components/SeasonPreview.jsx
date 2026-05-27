@@ -440,6 +440,24 @@ const TEAM_BUTTERFLY_EFFECTS = {
       label: "If Draymond Green plays center for 20+ mpg in a series",
       impact: +2.4,
       explanation: "Draymond at the 5 with four shooters around him is one of the most unique and successful small-ball experiments in modern basketball history. It's still terrifying when executed well."
+    },
+    {
+      id: "warriors-kuminga-minutes",
+      label: "If Jonathan Kuminga plays 28+ mpg as the athletic finisher",
+      impact: +2.1,
+      explanation: "Kuminga has massive playoff upside as a lob threat and switchable defender. Giving him a real role could turn Golden State into a completely different team in transition and half-court."
+    },
+    {
+      id: "warriors-curry-offball",
+      label: "If Steph plays 15+ mpg completely off-ball in a series",
+      impact: +2.0,
+      explanation: "Steph as a pure off-ball mover and shooter (instead of primary creator) is a version of him we rarely see. It would create the ultimate spacing nightmare for defenses."
+    },
+    {
+      id: "warriors-podziemski",
+      label: "If Brandin Podziemski gets 25+ mpg as the connector",
+      impact: +1.8,
+      explanation: "Podziemski has shown real playoff potential. When he gets big minutes, Golden State's ball movement and defensive communication improve noticeably."
     }
   ],
   "Dallas Mavericks": [
@@ -448,6 +466,24 @@ const TEAM_BUTTERFLY_EFFECTS = {
       label: "If Luka plays significant off-ball minutes next to another creator",
       impact: +2.1,
       explanation: "Luka as an off-ball player is a version of him we almost never see. In the playoffs, this could unlock a completely different offensive dimension."
+    },
+    {
+      id: "mavericks-kyrie-creation",
+      label: "If Kyrie Irving is the primary creator for 20+ mpg",
+      impact: +1.9,
+      explanation: "Kyrie as the main ball-handler while Luka plays more off-ball is a version of Dallas we haven't seen enough. It could make them much harder to guard in the half-court."
+    },
+    {
+      id: "mavericks-lively-minutes",
+      label: "If Dereck Lively II plays 30+ mpg as the lob threat and roller",
+      impact: +2.0,
+      explanation: "Lively has shown he can be a massive playoff difference-maker. When he gets big minutes, Dallas's offense becomes much more dynamic."
+    },
+    {
+      id: "mavericks-small-ball",
+      label: "If they go extremely small with Luka at power forward",
+      impact: +1.8,
+      explanation: "Luka as a 4 is a rare but effective look. It creates unique spacing and mismatch problems that most teams aren't prepared for."
     }
   ],
   "Minnesota Timberwolves": [
@@ -456,6 +492,18 @@ const TEAM_BUTTERFLY_EFFECTS = {
       label: "If they run actual offensive sets through Gobert as a passer",
       impact: +1.8,
       explanation: "Gobert as a playmaker from the short roll is an extremely rare and underused skill. If they actually leaned into it, it would create massive problems for drop coverage teams."
+    },
+    {
+      id: "wolves-ant-defense",
+      label: "If Anthony Edwards guards the opponent's best perimeter player full-time",
+      impact: +2.0,
+      explanation: "Ant has All-Defense level potential. When he takes on the toughest assignment, Minnesota's entire defense rises. This is one of their biggest playoff levers."
+    },
+    {
+      id: "wolves-small-ball",
+      label: "If they play a super small lineup with Ant at the 4",
+      impact: +1.9,
+      explanation: "Minnesota has the personnel to go very small and switchable. This look has been surprisingly effective for them at times."
     }
   ],
   "Phoenix Suns": [
@@ -464,6 +512,18 @@ const TEAM_BUTTERFLY_EFFECTS = {
       label: "If Devin Booker plays primary point guard with KD off-ball",
       impact: +1.9,
       explanation: "Booker as the main creator with KD as a pure scorer is a version of this team we haven't seen enough. It could solve some of their half-court creation issues."
+    },
+    {
+      id: "suns-kd-offball",
+      label: "If Kevin Durant plays 20+ mpg completely off-ball",
+      impact: +2.0,
+      explanation: "KD as a pure scorer and spacer (instead of creator) is extremely difficult to guard. This version of him makes Phoenix's offense much more dangerous."
+    },
+    {
+      id: "suns-small-ball",
+      label: "If they go extremely small with KD at the 5",
+      impact: +1.8,
+      explanation: "KD as a small-ball 5 creates unique spacing and switchability problems. Very few teams have the personnel to even attempt this."
     }
   ],
   "Los Angeles Clippers": [
@@ -472,6 +532,18 @@ const TEAM_BUTTERFLY_EFFECTS = {
       label: "If they go extremely small with Kawhi at power forward",
       impact: +2.0,
       explanation: "Kawhi as a 4 with multiple switchable wings is a nightmare matchup for most teams. This is one of the most versatile lineups in basketball when healthy."
+    },
+    {
+      id: "clippers-harden-offball",
+      label: "If James Harden plays significant off-ball minutes",
+      impact: +1.8,
+      explanation: "Harden as a spacer and secondary creator (instead of primary ball-handler) is a version of him that could unlock Kawhi and others even more."
+    },
+    {
+      id: "clippers-zubac-minutes",
+      label: "If Ivica Zubac plays 30+ mpg against certain matchups",
+      impact: +1.7,
+      explanation: "Zubac is a very effective traditional big in specific playoff situations. Knowing when to go big vs small is one of the Clippers' biggest strategic edges."
     }
   ],
   "Orlando Magic": [
@@ -480,6 +552,18 @@ const TEAM_BUTTERFLY_EFFECTS = {
       label: "If they play two traditional bigs + three long wings",
       impact: +2.3,
       explanation: "Orlando has the personnel to go extremely big and long. This would be one of the tallest and longest lineups in modern playoffs and could dominate the glass and paint."
+    },
+    {
+      id: "magic-paolo-creation",
+      label: "If Paolo Banchero plays 20+ mpg as the primary creator",
+      impact: +2.0,
+      explanation: "Paolo has shown he can carry an offense. Giving him a bigger creation role in the playoffs could turn Orlando from a defense-first team into a real offensive threat."
+    },
+    {
+      id: "magic-suggs-defense",
+      label: "If Jalen Suggs guards the opponent's best perimeter player full-time",
+      impact: +1.9,
+      explanation: "Suggs is already one of the best perimeter defenders in the league. When he takes the toughest assignment, Orlando's defense becomes elite even by their standards."
     }
   ],
   "Memphis Grizzlies": [
