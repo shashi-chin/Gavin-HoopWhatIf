@@ -8,7 +8,12 @@ import DreamTeam from './components/DreamTeam'
 import SeasonPreview from './components/SeasonPreview'
 
 function App() {
-  const [activeTab, setActiveTab] = useState('explorer')
+  // Check if there's a shared scenario in the URL hash.
+  // If yes, we should open directly in the Season Preview tab.
+  const hasScenarioHash = typeof window !== 'undefined' && 
+                          window.location.hash.startsWith('#scenario=');
+
+  const [activeTab, setActiveTab] = useState(hasScenarioHash ? 'season' : 'explorer')
   const [selectedPlayer, setSelectedPlayer] = useState(null)
   
   // Explorer filters
