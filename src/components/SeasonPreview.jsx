@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useSeasonData } from '../hooks/useSeasonData'
 
 // Unique team insights - the "secret sauce" not on most stat sites
@@ -628,6 +628,75 @@ export default function SeasonPreview() {
   // These are specific, surprising scenarios that feel like hidden advanced stats
   const [activeButterflyEffects, setActiveButterflyEffects] = useState({}) // { effectId: true }
 
+  // =====================================================
+  // SHAREABLE SCENARIOS - Serialization Logic
+  // =====================================================
+
+  // Encode current scenario into a compact string for URL
+  const encodeScenario = () => {
+    const scenario = {
+      sa: starAvailability,
+      cb: chemistryBoost,
+      ir: injuryRegression,
+      pp: playoffPace,
+      ph: playoffPhysicality,
+      hc: playoffHalfCourt,
+      mm: playoffMismatch,
+      be: Object.keys(activeButterflyEffects),
+      conf: conference,
+      team: selectedTeamName || null
+    };
+    try {
+      return btoa(JSON.stringify(scenario));
+    } catch (e) {
+      console.error("Failed to encode scenario", e);
+      return null;
+    }
+  };
+
+  // Decode scenario from string and apply it
+  const decodeAndApplyScenario = (encoded) => {
+    try {
+      const scenario = JSON.parse(atob(encoded));
+
+      // Apply regular what-if sliders
+      if (scenario.sa !== undefined) setStarAvailability(scenario.sa);
+      if (scenario.cb !== undefined) setChemistryBoost(scenario.cb);
+      if (scenario.ir !== undefined) setInjuryRegression(scenario.ir);
+
+      // Apply playoff environment
+      if (scenario.pp !== undefined) setPlayoffPace(scenario.pp);
+      if (scenario.ph !== undefined) setPlayoffPhysicality(scenario.ph);
+      if (scenario.hc !== undefined) setPlayoffHalfCourt(scenario.hc);
+      if (scenario.mm !== undefined) setPlayoffMismatch(scenario.mm);
+
+      // Apply butterfly effects
+      if (Array.isArray(scenario.be)) {
+        const effectsObj = {};
+        scenario.be.forEach(id => { effectsObj[id] = true; });
+        setActiveButterflyEffects(effectsObj);
+      }
+
+      // Optional: conference and selected team
+      if (scenario.conf) setConference(scenario.conf);
+      if (scenario.team) setSelectedTeamName(scenario.team);
+
+    } catch (e) {
+      console.error("Failed to decode scenario", e);
+    }
+  };
+
+  // Load scenario from URL hash on mount
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (hash.startsWith('#scenario=')) {
+      const encoded = hash.replace('#scenario=', '');
+      decodeAndApplyScenario(encoded);
+      // Clean the hash after loading so it doesn't stay in the URL visibly
+      // window.history.replaceState(null, '', window.location.pathname);
+    }
+  }, []);
+
   if (loading) {
     return <div className="text-center py-20 text-white/60">Loading season predictions...</div>
   }
@@ -976,12 +1045,30 @@ export default function SeasonPreview() {
               </div>
               <div className="text-sm text-white/60">Real playoff conditions. All inputs combine into the Master Final Playoff Projection below.</div>
             </div>
-            <button 
-              onClick={resetWhatIf}
-              className="text-xs px-4 py-1.5 rounded-full bg-white/10 hover:bg-white/15 transition"
-            >
-              RESET ALL
-            </button>
+            <div className="flex gap-2">
+              <button 
+                onClick={resetWhatIf}
+                className="text-xs px-4 py-1.5 rounded-full bg-white/10 hover:bg-white/15 transition"
+              >
+                RESET ALL
+              </button>
+              <button 
+                onClick={() => {
+                  const encoded = encodeScenario();
+                  if (encoded) {
+                    const url = `${window.location.origin}${window.location.pathname}#scenario=${encoded}`;
+                    navigator.clipboard.writeText(url).then(() => {
+                      alert("Scenario link copied! Share it with anyone.");
+                    }).catch(() => {
+                      prompt("Copy this scenario link:", url);
+                    });
+                  }
+                }}
+                className="text-xs px-4 py-1.5 rounded-full bg-emerald-400/20 hover:bg-emerald-400/30 text-emerald-400 transition font-medium"
+              >
+                Share Scenario
+              </button>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
